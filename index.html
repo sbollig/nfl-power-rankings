@@ -3,18 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Todd's NFL Workbook Logic</title>
+<title>Ranked: Mack's Analysis of TEB's Week 1 NFL Power Rankings</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Encode+Sans+Semi+Condensed:wght@600;700&family=Noto+Serif:wght@400;700&family=Fira+Sans:wght@400;600;700&display=swap');
   :root{
     --bg:#fbfaf8; --fg:#1c1c1e; --muted:#5b5b62;
     --rule:#dcd8d0; --card:#ffffff;
-    --input:#2a6f8f; --formula:#c9711d; --output:#1f6b3a; --dead:#9b2d2d; --added:#5a4fa8; --seed:#b08a1e;
+    --input:#2a6f8f; --formula:#c9711d; --output:#1f6b3a; --dead:#9b2d2d; --mack:#5a4fa8; --seed:#b08a1e;
   }
   @media (prefers-color-scheme: dark){
     :root{
       --bg:#16161a; --fg:#eceaf0; --muted:#a5a3ad;
       --rule:#35353d; --card:#1e1e24;
-      --input:#7fc3e0; --formula:#f0954a; --output:#7fd6a0; --dead:#ff9c9c; --added:#b3aaf3; --seed:#e0c05a;
+      --input:#7fc3e0; --formula:#f0954a; --output:#7fd6a0; --dead:#ff9c9c; --mack:#b3aaf3; --seed:#e0c05a;
     }
   }
   *{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -34,12 +35,12 @@
   .out{fill:color-mix(in srgb,var(--output) 16%,var(--card));stroke:var(--output)}
   .sd{fill:color-mix(in srgb,var(--seed) 16%,var(--card));stroke:var(--seed);stroke-dasharray:4 3}
   .dd{fill:color-mix(in srgb,var(--dead) 10%,var(--card));stroke:var(--dead);stroke-dasharray:2 3}
-  .mk{fill:color-mix(in srgb,var(--added) 14%,var(--card));stroke:var(--added)}
+  .mk{fill:color-mix(in srgb,var(--mack) 14%,var(--card));stroke:var(--mack)}
   .t{font-size:10.5px;fill:var(--fg);font-weight:600}
   .s{font-size:8.8px;fill:var(--muted)}
   .f{font-size:9px;fill:var(--fg);font-family:ui-monospace,Menlo,monospace}
   .arrow{stroke:var(--muted);stroke-width:1.3;fill:none;marker-end:url(#ah)}
-  .arrow.added{stroke:var(--added);stroke-dasharray:4 3}
+  .arrow.mack{stroke:var(--mack);stroke-dasharray:4 3}
   code{font-family:ui-monospace,Menlo,monospace;font-size:.92em;background:color-mix(in srgb,var(--fg) 6%,transparent);padding:0 .3em;border-radius:4px}
   .legend{display:grid;grid-template-columns:auto 1fr;gap:.6rem 1rem;font-size:1em;align-items:start}
   .sw{display:inline-block;width:1.1em;height:1.1em;border-radius:4px;border:1.5px solid var(--c);background:color-mix(in srgb,var(--c) 16%,var(--card));vertical-align:-.15em}
@@ -59,60 +60,118 @@
   .tier{display:inline-block;padding:.05em .55em;border-radius:999px;font-size:.8em;font-weight:700;color:var(--c);border:1.5px solid var(--c);background:color-mix(in srgb,var(--c) 12%,var(--card))}
   table.rank th:nth-child(-n+3),table.rank td:nth-child(-n+3){text-align:left}
   footer{margin-top:1.2rem;font-size:.85em;color:var(--muted);border-top:1px solid var(--rule);padding-top:.4rem}
+
+  /* editorial style */
+  :root{--bg:#FAFAFA;--fg:#252525;--muted:#5f6368;--rule:#e3e5e8;--card:#ffffff;--vc:#91b537;--vc-dark:#2a6338;--navy:#0f1e3a;--navy2:#16294d}
+  body{font-family:'Noto Serif',Georgia,serif;font-size:17px;line-height:1.6}
+  h1{font-family:'Playfair Display',Georgia,serif;font-weight:900;font-size:2.9rem;line-height:1.1;margin:.15em 0 .25em;letter-spacing:-.01em}
+  @media (max-width:700px){h1{font-size:1.8rem}}
+  h1 .pre{color:var(--vc-dark)}
+  h2,h3,th,.kicker,.byline,.tier,.stat b,.sym{font-family:'Encode Sans Semi Condensed','Fira Sans',system-ui,sans-serif}
+  h2{font-weight:700;font-size:1.45rem;border:0;padding:0;margin:1.4em 0 .4em}
+  .kicker{display:none}
+  .byline{font-family:'Fira Sans',system-ui,sans-serif;font-size:.95rem;color:var(--muted);margin:0 0 1.1em;border-bottom:1px solid var(--rule);padding-bottom:.6em}
+  .byline b{color:var(--fg);font-weight:600}
+  .lede{font-size:1.05em;color:var(--fg)}
+  a{color:var(--fg);text-decoration:none;box-shadow:inset 0 -4px 0 var(--vc)}
+  .takeaways{background:#f8f9fa;border-left:4px solid var(--vc-dark);padding:15px 18px;border-radius:5px;margin:1em 0 1.4em}
+  .takeaways h3{color:var(--vc-dark);margin:0 0 .4em;font-size:1.15rem}
+  .takeaways ul{margin:0;padding-left:1.2em}
+  .takeaways li{margin:.25em 0}
+  .viz{background:var(--navy);color:#f2f4f8;border-radius:10px;padding:1.4rem 1.6rem 1rem;margin:.6em 0 1.2em;font-family:'Fira Sans',system-ui,sans-serif}
+  .viz .vt{font-family:'Encode Sans Semi Condensed',sans-serif;font-weight:700;font-size:1.9rem;line-height:1.05;margin:0}
+  .viz .vd{color:#b9c3d6;font-size:.95rem;margin:.3em 0 1em}
+  .viz .vl{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;font-size:.85rem;color:#b9c3d6;margin-bottom:.9em;align-items:center}
+  .viz .vl i{display:inline-block;width:2.2em;height:.8em;border-radius:2px;vertical-align:-.1em;margin-right:.35em;background:linear-gradient(90deg,#f6d55c,#e07b39)}
+  .viz .vl i.neg{background:linear-gradient(90deg,#3d7fbf,#9fc7e8)}
+  .viz .big{margin-left:auto;background:var(--navy2);border:1px solid #2f4470;border-radius:10px;padding:.35em .9em;text-align:center}
+  .viz .big b{display:block;font-size:1.5rem;color:#fff;line-height:1.1}
+  .viz .big span{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+  .pg{display:flex;gap:.4rem;align-items:center;margin:.2em 0 .8em;font-size:.85rem;color:#b9c3d6}
+  .pg span{margin-right:.3rem;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem}
+  .pg button{font:inherit;font-weight:600;color:#f2f4f8;background:#1b2f56;border:1px solid #2f4470;border-radius:999px;padding:.25em .9em;cursor:pointer}
+  .pg button[aria-selected="true"]{background:#f6d55c;color:var(--navy);border-color:#f6d55c}
+  .pg button:hover{border-color:#f6d55c}
+  .slope svg{width:100%;max-width:1100px;height:auto;display:block;margin:0 auto;font-family:'Fira Sans',system-ui,sans-serif}
+  .slope .lab{font-size:11px;fill:#f2f4f8;font-weight:600}
+  .slope .num{font-size:11px;fill:#b9c3d6;font-variant-numeric:tabular-nums}
+  .slope .col{font-size:11px;fill:#8f9bb5;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+  .slope .ln{fill:none;stroke-width:2.2;opacity:.9}
+  .slope .bg{fill:#16294d}
+  .slope .d{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+  .vl .dot{display:inline-block;width:.8em;height:.8em;border-radius:50%;margin-right:.35em;vertical-align:-.05em;background:var(--c)}
+  .vl.box{background:var(--navy2);border:1px solid #2f4470;border-radius:10px;padding:.5em .9em;display:inline-flex}
+  .rk{display:grid;grid-template-columns:2em 11em 1fr 3.4em 4.2em;gap:.35em .7em;align-items:center;font-size:.98rem}
+  [hidden]{display:none!important}
+  .rk .h button{all:unset;cursor:pointer;font:inherit;color:inherit;text-transform:inherit;letter-spacing:inherit}
+  .rk .h button:hover{color:#fff}
+  .rk .h.on{color:#f6d55c}
+  .rk .h .g{font-size:.9em;opacity:.7}
+  .rk .h.on .g{opacity:1}
+  .rk .h{color:#8f9bb5;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;padding-bottom:.3em;border-bottom:1px solid #2f4470}
+  .rk .n{display:inline-flex;width:1.7em;height:1.7em;border-radius:50%;background:#fff;color:var(--navy);font-weight:700;align-items:center;justify-content:center;font-size:.85rem}
+  .rk .tm{font-weight:600;white-space:nowrap}
+  .rk .tm small{color:#8f9bb5;font-weight:400;margin-left:.4em}
+  .rk .bar{position:relative;height:1.05em;background:#1b2f56;border-radius:2px}
+  .rk .bar i{position:absolute;top:0;bottom:0;border-radius:2px}
+  .rk .bar i.pos{left:50%;background:linear-gradient(90deg,#e07b39,#f6d55c)}
+  .rk .bar i.neg{right:50%;background:linear-gradient(90deg,#9fc7e8,#3d7fbf)}
+  .rk .bar u{position:absolute;left:50%;top:-2px;bottom:-2px;border-left:1px dashed #8f9bb5}
+  .rk .v{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+  .rk .mv{color:#b9c3d6;text-align:right;font-size:.85rem;font-variant-numeric:tabular-nums}
+  .rk .mv.up{color:#9be27a}.rk .mv.dn{color:#ff9c9c}
+  .rk .bron{color:#ffb84d}
+  .rk .tag{font-size:.62rem;letter-spacing:.08em;background:#f6d55c;color:var(--navy);border-radius:3px;padding:0 .35em;margin-left:.4em;vertical-align:.1em}
+  .rk .tag.lo{background:#3d7fbf;color:#fff}
+  .viz .src{margin-top:1em;padding-top:.6em;border-top:1px solid #2f4470;font-size:.78rem;color:#b9c3d6;font-style:italic;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4em}
+  .viz .src b{font-style:normal;font-family:'Encode Sans Semi Condensed',sans-serif;letter-spacing:.1em;color:#fff}
+  @media (prefers-color-scheme: dark){:root{--bg:#FAFAFA;--fg:#252525;--muted:#5f6368;--rule:#e3e5e8;--card:#ffffff}}
+  .panel{border-color:var(--rule)}
+  footer{font-style:italic}
 </style>
 </head>
 <body>
-<div class="kicker">Scott Bollig · 2026-09-14 · before Monday night</div>
-<h1>Todd's NFL Workbook Logic</h1>
-<p class="lede">Todd's weekly spreadsheet turns one hand-typed rating per team into a projected spread and reports where that spread disagrees with the sportsbook. It has no feedback loop, so the rating update and the scorecard below are my additions, drawn in purple to keep them separate from Todd's work.</p>
+<h1><span class="pre">Ranked:</span> Mack's Analysis of TEB's Week 1 NFL Power Rankings</h1>
+<p class="byline">By <b>Mack</b> (Analysis) &nbsp;·&nbsp; September 14, 2026, before Monday Night Football</p>
+<p class="lede">TEB builds his NFL power rankings in a spreadsheet: one hand-typed rating per team, a home-field number, and the sportsbook line. I pulled the sheet apart, recomputed every formula, scored his Week 1 projections against the 15 finals, and re-ran his rankings with a fixed update rule he never wrote down. What follows is my read of where his board stands going into Monday night.</p>
 
 
-<h2 style="margin-top:.6em">Updated power ranking, after Week 1 (pre-MNF)</h2>
-<p class="lede">Todd's Week 1 ratings, moved by my update rule using the 15 finals. Rating = points better than an average team on a neutral field. Broncos and Chiefs hold at Todd's numbers until tonight's final. Tiers use the workbook's own cut lines: 4, 2, −2, −4.</p>
-<div class="wrap">
-<table class="rank">
-<thead><tr><th>Rk</th><th>Team</th><th>Tier</th><th>New</th><th>Todd Wk 1</th><th>Δ</th><th>Move</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>Ravens</td><td><span class="tier" style="--c:var(--output)">Contender</span></td><td>+8.1</td><td>+5.5</td><td>+2.6</td><td>▲ 2</td></tr>
-<tr><td>2</td><td>Bears</td><td><span class="tier" style="--c:var(--output)">Contender</span></td><td>+6.9</td><td>+3.3</td><td>+3.6</td><td>▲ 7</td></tr>
-<tr><td>3</td><td>Bills</td><td><span class="tier" style="--c:var(--output)">Contender</span></td><td>+6.6</td><td>+5.8</td><td>+0.8</td><td>▼ 1</td></tr>
-<tr style="font-weight:700"><td>4</td><td>Broncos (tonight)</td><td><span class="tier" style="--c:var(--output)">Contender</span></td><td>+4.7</td><td>+4.7</td><td>+0.0</td><td>▲ 1</td></tr>
-<tr><td>5</td><td>Eagles</td><td><span class="tier" style="--c:var(--output)">Contender</span></td><td>+4.6</td><td>+5.2</td><td>-0.6</td><td>▼ 1</td></tr>
-<tr><td>6</td><td>Chiefs (tonight)</td><td><span class="tier" style="--c:var(--output)">Contender</span></td><td>+4.5</td><td>+4.5</td><td>+0.0</td><td>same</td></tr>
-<tr><td>7</td><td>49ers</td><td><span class="tier" style="--c:var(--output)">Contender</span></td><td>+4.2</td><td>+0.0</td><td>+4.2</td><td>▲ 12</td></tr>
-<tr><td>8</td><td>Jaguars</td><td><span class="tier" style="--c:var(--output)">Contender</span></td><td>+4.0</td><td>+0.9</td><td>+3.1</td><td>▲ 8</td></tr>
-<tr><td>9</td><td>Bengals</td><td><span class="tier" style="--c:var(--output)">Playoff</span></td><td>+2.9</td><td>+2.5</td><td>+0.4</td><td>▲ 3</td></tr>
-<tr><td>10</td><td>Seahawks</td><td><span class="tier" style="--c:var(--output)">Playoff</span></td><td>+2.7</td><td>+2.8</td><td>-0.1</td><td>▲ 1</td></tr>
-<tr><td>11</td><td>Vikings</td><td><span class="tier" style="--c:var(--output)">Playoff</span></td><td>+2.6</td><td>-1.5</td><td>+4.1</td><td>▲ 12</td></tr>
-<tr><td>12</td><td>Commanders</td><td><span class="tier" style="--c:var(--output)">Playoff</span></td><td>+2.6</td><td>+2.0</td><td>+0.6</td><td>▲ 2</td></tr>
-<tr><td>13</td><td>Texans</td><td><span class="tier" style="--c:var(--output)">Playoff</span></td><td>+2.3</td><td>+3.1</td><td>-0.8</td><td>▼ 3</td></tr>
-<tr><td>14</td><td>Rams</td><td><span class="tier" style="--c:var(--output)">Playoff</span></td><td>+2.0</td><td>+6.2</td><td>-4.2</td><td>▼ 13</td></tr>
-<tr><td>15</td><td>Lions</td><td><span class="tier" style="--c:var(--output)">Playoff</span></td><td>+2.0</td><td>+3.8</td><td>-1.8</td><td>▼ 7</td></tr>
-<tr><td>16</td><td>Patriots</td><td><span class="tier" style="--c:var(--seed)">Middle</span></td><td>+1.5</td><td>+1.4</td><td>+0.1</td><td>▼ 1</td></tr>
-<tr><td>17</td><td>Steelers</td><td><span class="tier" style="--c:var(--seed)">Middle</span></td><td>+1.2</td><td>+0.5</td><td>+0.7</td><td>same</td></tr>
-<tr><td>18</td><td>Packers</td><td><span class="tier" style="--c:var(--seed)">Middle</span></td><td>-0.1</td><td>+4.0</td><td>-4.1</td><td>▼ 11</td></tr>
-<tr><td>19</td><td>Buccaneers</td><td><span class="tier" style="--c:var(--seed)">Middle</span></td><td>-0.2</td><td>+0.2</td><td>-0.4</td><td>▼ 1</td></tr>
-<tr><td>20</td><td>Raiders</td><td><span class="tier" style="--c:var(--seed)">Middle</span></td><td>-0.6</td><td>-3.2</td><td>+2.6</td><td>▲ 7</td></tr>
-<tr><td>21</td><td>Giants</td><td><span class="tier" style="--c:var(--seed)">Middle</span></td><td>-0.7</td><td>-2.5</td><td>+1.8</td><td>▲ 4</td></tr>
-<tr><td>22</td><td>Cardinals</td><td><span class="tier" style="--c:var(--seed)">Middle</span></td><td>-0.9</td><td>-5.0</td><td>+4.1</td><td>▲ 8</td></tr>
-<tr><td>23</td><td>Falcons</td><td><span class="tier" style="--c:var(--seed)">Middle</span></td><td>-1.8</td><td>-1.1</td><td>-0.7</td><td>▼ 1</td></tr>
-<tr><td>24</td><td>Chargers</td><td><span class="tier" style="--c:var(--seed)">Middle</span></td><td>-1.8</td><td>+2.3</td><td>-4.1</td><td>▼ 11</td></tr>
-<tr><td>25</td><td>Cowboys</td><td><span class="tier" style="--c:var(--formula)">Below</span></td><td>-2.1</td><td>-0.3</td><td>-1.8</td><td>▼ 5</td></tr>
-<tr><td>26</td><td>Jets</td><td><span class="tier" style="--c:var(--formula)">Below</span></td><td>-2.3</td><td>-5.5</td><td>+3.2</td><td>▲ 5</td></tr>
-<tr><td>27</td><td>Saints</td><td><span class="tier" style="--c:var(--formula)">Below</span></td><td>-2.5</td><td>-4.3</td><td>+1.8</td><td>▲ 2</td></tr>
-<tr><td>28</td><td>Colts</td><td><span class="tier" style="--c:var(--formula)">Below</span></td><td>-3.4</td><td>-0.8</td><td>-2.6</td><td>▼ 7</td></tr>
-<tr><td>29</td><td>Dolphins</td><td><span class="tier" style="--c:var(--dead)">Bottom</span></td><td>-5.4</td><td>-2.8</td><td>-2.6</td><td>▼ 3</td></tr>
-<tr><td>30</td><td>Panthers</td><td><span class="tier" style="--c:var(--dead)">Bottom</span></td><td>-5.8</td><td>-2.2</td><td>-3.6</td><td>▼ 6</td></tr>
-<tr><td>31</td><td>Titans</td><td><span class="tier" style="--c:var(--dead)">Bottom</span></td><td>-6.9</td><td>-3.7</td><td>-3.2</td><td>▼ 3</td></tr>
-<tr><td>32</td><td>Browns</td><td><span class="tier" style="--c:var(--dead)">Bottom</span></td><td>-9.1</td><td>-6.0</td><td>-3.1</td><td>same</td></tr>
-</tbody>
-</table>
-</div>
+<section class="viz" aria-label="Before and after Week 1">
+  <p class="vt">Before and After Week 1</p>
+  <p class="vd">Left: TEB's preseason order (ratings dated 2026-08-16). Right: the same ratings re-run through 15 finals, Monday morning before Broncos at Chiefs. Lines follow each team; color = tier after Week 1.</p>
+  <div class="vl" id="tierleg"></div>
+  <div class="slope" id="slope"></div>
+  <p class="src"><b>MACK · ANALYSIS</b><span>Source: TEB's 2026 NFL Weekly Intel workbook; ESPN scoreboard, Week 1 finals, retrieved 2026-09-14. Tiers: Contender ≥ 4, Playoff ≥ 2, Middle to −2, Below to −4, Bottom under −4.</span></p>
+</section>
+
+<section class="viz" aria-label="Ranking graphic">
+  <p class="vt">TEB's Power Rankings, Re-run After Week 1</p>
+  <p class="vd">Points better (or worse) than an average team on a neutral field. TEB's preseason ratings, adjusted by Mack for the 15 games played; Broncos and Chiefs unchanged until tonight's final.</p>
+  <div class="vl"><span><i></i>above average</span><span><i class="neg"></i>below average</span><span>dashed line = 0, an average team</span>
+    <span class="big"><b>+0.6</b><span>league average rating</span></span></div>
+  <div class="pg" role="tablist" aria-label="Show teams">
+    <span>Showing</span>
+    <button role="tab" aria-selected="true" data-pg="1">1–10</button>
+    <button role="tab" data-pg="2">11–20</button>
+    <button role="tab" data-pg="3">21–30</button>
+    <button role="tab" data-pg="4">31–32</button>
+  </div>
+  <div class="rk" id="rk"></div>
+  <p class="src"><b>MACK · ANALYSIS</b><span>Source: TEB's 2026 NFL Weekly Intel workbook (ratings dated 2026-08-16); ESPN scoreboard, Week 1 finals, retrieved 2026-09-14. Figures rounded to one decimal.</span></p>
+</section>
+
+<h2>Who moved after one week?</h2>
+<div class="takeaways"><h3>Key Takeaways</h3><ul>
+<li>The Ravens jumped two places to No. 1 at +8.1 after beating the Colts by 18.</li>
+<li>The Rams fell 13 places, the biggest drop, after a 20-point loss to the 49ers in Melbourne.</li>
+<li>TEB's projections went 10-5 straight up and 6-5 against the book on the 11 games with a real line.</li>
+</ul></div>
+<p>TEB rates every team with one number before the season and re-types those numbers each week by hand. This page adjusts them using a simple rule, one fifth of the difference between his projected margin and the actual one, capped so a single blowout cannot rewrite the board. The Broncos moved up one spot without playing because the Rams fell past them.</p>
 
 <div class="grid">
 <section class="panel" aria-label="Logic flow">
-  <h2 style="margin-top:0">Logic flow, one game row</h2>
-  <svg viewBox="0 0 520 420" role="img" aria-labelledby="flowt"><title id="flowt">Flow from Todd's inputs to the edge, plus the added update loop</title>
+  <h2 style="margin-top:0">How does the spreadsheet get from ratings to a spread?</h2>
+  <svg viewBox="0 0 520 420" role="img" aria-labelledby="flowt"><title id="flowt">Flow from TEB's inputs to the edge, plus Mack's update loop</title>
     <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs>
 
     <!-- inputs row -->
@@ -160,8 +219,8 @@
     <!-- edge output -->
     <rect class="box out" x="200" y="270" width="210" height="52"/>
     <text class="t" x="305" y="288" text-anchor="middle">N · Edge = L − M</text>
-    <text class="s" x="305" y="303" text-anchor="middle">&lt; 0  Todd likes home more than the book</text>
-    <text class="s" x="305" y="315" text-anchor="middle">&gt; 0  Todd leans away</text>
+    <text class="s" x="305" y="303" text-anchor="middle">&lt; 0  TEB likes home more than the book</text>
+    <text class="s" x="305" y="315" text-anchor="middle">&gt; 0  TEB leans away</text>
 
     <path class="arrow" d="M265 242 V270"/>
     <path class="arrow" d="M180 296 H200"/>
@@ -172,46 +231,46 @@
     <text class="s" x="470" y="306" text-anchor="middle">stored,</text>
     <text class="s" x="470" y="316" text-anchor="middle">never used</text>
 
-    <!-- update loop -->
+    <!-- Mack loop -->
     <rect class="box mk" x="60" y="352" width="400" height="54"/>
-    <text class="t" x="260" y="370" text-anchor="middle">Added: rating update (not in Todd's sheet)</text>
+    <text class="t" x="260" y="370" text-anchor="middle">Mack · rating update (not in TEB's sheet)</text>
     <text class="f" x="260" y="386" text-anchor="middle">new = old + 0.2 × clamp(actual − projected, ±21)</text>
     <text class="s" x="260" y="399" text-anchor="middle">winner up, loser down by the same amount; ratings sum is conserved</text>
-    <path class="arrow added" d="M265 322 V352"/>
-    <path class="arrow added" d="M460 379 H495 V40 H510"/>
+    <path class="arrow mack" d="M265 322 V352"/>
+    <path class="arrow mack" d="M460 379 H495 V40 H510"/>
   </svg>
 </section>
 
 <section class="panel" aria-label="Legend">
   <h2 style="margin-top:0">Legend</h2>
   <div class="legend">
-    <span class="sw" style="--c:var(--input)"></span><span><b>Input</b>, blue. Typed by Todd or copied from the schedule. No formula behind it.</span>
+    <span class="sw" style="--c:var(--input)"></span><span><b>Input</b>, blue. Typed by TEB or copied from the schedule. No formula behind it.</span>
     <span class="sw" style="--c:var(--formula)"></span><span><b>Formula</b>, orange. Computed by Excel from the cells above it. Column letter shown.</span>
     <span class="sw" style="--c:var(--output)"></span><span><b>Output</b>, green. The one number the sheet exists to produce.</span>
     <span class="sw dash" style="--c:var(--seed)"></span><span><b>Seeded</b>, gold dashed. Started as a formula, meant to be overwritten. Rows still holding the seed have no real book line.</span>
     <span class="sw dash" style="--c:var(--dead)"></span><span><b>Dead end</b>, red dotted. Stored but referenced by nothing.</span>
-    <span class="sw" style="--c:var(--added)"></span><span><b>My addition</b>, purple. Logic Todd never wrote; labeled so it is never mistaken for his.</span>
+    <span class="sw" style="--c:var(--mack)"></span><span><b>Mack's addition</b>, purple. Logic TEB never wrote; labeled so it is never mistaken for his.</span>
     <span class="sym">−3.5</span><span><b>Spread sign</b>: home-side, sportsbook convention. Negative = home favored by that many points.</span>
-    <span class="sym">Edge</span><span>Todd's spread minus the book's. Negative = he has the home team stronger than Vegas; positive = he leans away.</span>
-    <span class="sym">SU</span><span><b>Straight up</b>: did the team Todd's spread favored win the game.</span>
-    <span class="sym">ATS</span><span><b>Against the spread</b>: did the side Todd's edge pointed to cover the book line. Blank on seeded rows.</span>
+    <span class="sym">Edge</span><span>TEB's spread minus the book's. Negative = he has the home team stronger than Vegas; positive = he leans away.</span>
+    <span class="sym">SU</span><span><b>Straight up</b>: did the team TEB's spread favored win the game.</span>
+    <span class="sym">ATS</span><span><b>Against the spread</b>: did the side TEB's edge pointed to cover the book line. Blank on seeded rows.</span>
     <span class="sym">✅ ❌</span><span>Hit / miss. <b>–</b> means no real book line, so not scoreable.</span>
-    <span class="sym">Tier</span><span><b>Contender</b> ≥ 4 · <b>Playoff</b> ≥ 2 · <b>Middle</b> −2 to 2 · <b>Below</b> ≥ −4 · <b>Bottom</b> below −4. Same cut lines used in the ranking table above.</span>
-    <span class="sym">▲ ▼</span><span><b>Move</b>: places gained or lost versus Todd's Week 1 order. Broncos rose one place without playing because the Rams fell past them.</span>
+    <span class="sym">Tier</span><span><b>Contender</b> ≥ 4 · <b>Playoff</b> ≥ 2 · <b>Middle</b> −2 to 2 · <b>Below</b> ≥ −4 · <b>Bottom</b> below −4. Same cut lines used in the ranking above.</span>
+    <span class="sym">▲ ▼</span><span><b>Move</b>: places gained or lost versus TEB's Week 1 order. Broncos rose one place without playing because the Rams fell past them.</span>
     <span class="sym">Surprise</span><span>Actual margin minus projected margin, clamped to ±21 so one blowout cannot rewrite the board.</span>
   </div>
 </section>
 </div>
 
-<h2>Todd's Week 1 scorecard</h2>
+<h2>How did TEB's spreads do in Week 1?</h2>
 <div class="stat">
   <div style="--c:var(--output)"><b>10 / 15</b><span>straight-up winners</span></div>
   <div style="--c:var(--output)"><b>6 / 11</b><span>against the spread, on rows with a real book line</span></div>
-  <div style="--c:var(--formula)"><b>11.6 vs 11.4</b><span>mean spread error in points, Todd vs book</span></div>
+  <div style="--c:var(--formula)"><b>11.6 vs 11.4</b><span>mean spread error in points, TEB vs book</span></div>
 </div>
 <div class="wrap">
 <table>
-<thead><tr><th>G</th><th>Away</th><th>Home</th><th>Score</th><th>Todd</th><th>Book</th><th>Actual</th><th>SU</th><th>Edge</th><th>ATS</th></tr></thead>
+<thead><tr><th>G</th><th>Away</th><th>Home</th><th>Score</th><th>TEB</th><th>Book</th><th>Actual</th><th>SU</th><th>Edge</th><th>ATS</th></tr></thead>
 <tbody>
 <tr class="seed"><td>1</td><td>Patriots</td><td>Seahawks</td><td>10-13</td><td>−3.7</td><td>seed</td><td>−3</td><td class="c">✅</td><td>–</td><td class="c">–</td></tr>
 <tr><td>2</td><td>49ers</td><td>Rams</td><td>27-7</td><td>−6.4</td><td>−3.5</td><td>+20</td><td class="c">❌</td><td>−2.9</td><td class="c">❌</td></tr>
@@ -233,9 +292,66 @@
 </table>
 </div>
 
-<h2>Update rule, mine</h2>
-<p>Todd's ratings never move on their own. After each week I shift both teams by one fifth of the surprise, the actual home margin minus Todd's projected margin, clamped to ±21 points. The home team gains that amount and the away team loses it, so the league total never drifts. Broncos and Chiefs are untouched until tonight's final. Results after Week 1: Ravens, Bears, Bills, Broncos, Eagles are the new top five; Rams fell 13 places, 49ers and Vikings rose 12. Full table at the top of this page.</p>
 
-<footer>Sources: formulas and values read directly from the workbook (every derived cell recomputed, 0 mismatches) · scores from the ESPN Week 1 scoreboard, retrieved 2026-09-14, all 15 games final · ratings and home-field values are Todd's opinions, not independently verified. For entertainment only; not betting advice. Static page, no tracking.</footer>
+<h2>How does Mack grade TEB's Week 1?</h2>
+<div class="takeaways"><h3>Grade: B−</h3><ul>
+<li>Winners, B: 10 of 15, with four of the five misses being upsets the book also missed.</li>
+<li>Beating the book, C+: 6 of 11, a coin flip with a small edge; a bettor needs about 52.4% to cover the vig.</li>
+<li>Homework, D: 4 of 16 book lines were never entered, so a quarter of the rows have no edge to grade.</li>
+</ul></div>
+<p>The ratings are decent and the spread error matches the market. The process is what's unfinished: enter every line, keep the ratings, and let a fixed rule move them each week. Re-grade after tonight's Broncos result.</p>
+<h2>How are the ratings updated?</h2>
+<p>TEB's ratings never move on their own. After each week I shift both teams by one fifth of the surprise, the actual home margin minus TEB's projected margin, clamped to ±21 points. The home team gains that amount and the away team loses it, so the league total never drifts. Broncos and Chiefs are untouched until tonight's final. Results after Week 1: Ravens, Bears, Bills, Broncos, Eagles are the new top five; Rams fell 13 places, 49ers and Vikings rose 12. Full table at the top of this page.</p>
+
+<footer>Sources: formulas and values read directly from the workbook (every derived cell recomputed, 0 mismatches) · scores from the ESPN Week 1 scoreboard, retrieved 2026-09-14, all 15 games final · ratings and home-field values are TEB's opinions, not independently verified. For entertainment only; not betting advice. Static page, no tracking.</footer>
+<script>
+const DATA=[{"rk": 1, "team": "Ravens", "tonight": false, "v": 8.1, "old": 5.5, "mv": 2}, {"rk": 2, "team": "Bears", "tonight": false, "v": 6.9, "old": 3.3, "mv": 7}, {"rk": 3, "team": "Bills", "tonight": false, "v": 6.6, "old": 5.8, "mv": -1}, {"rk": 4, "team": "Broncos", "tonight": true, "v": 4.7, "old": 4.7, "mv": 1}, {"rk": 5, "team": "Eagles", "tonight": false, "v": 4.6, "old": 5.2, "mv": -1}, {"rk": 6, "team": "Chiefs", "tonight": true, "v": 4.5, "old": 4.5, "mv": 0}, {"rk": 7, "team": "49ers", "tonight": false, "v": 4.2, "old": 0.0, "mv": 12}, {"rk": 8, "team": "Jaguars", "tonight": false, "v": 4.0, "old": 0.9, "mv": 8}, {"rk": 9, "team": "Bengals", "tonight": false, "v": 2.9, "old": 2.5, "mv": 3}, {"rk": 10, "team": "Seahawks", "tonight": false, "v": 2.7, "old": 2.8, "mv": 1}, {"rk": 11, "team": "Vikings", "tonight": false, "v": 2.6, "old": -1.5, "mv": 12}, {"rk": 12, "team": "Commanders", "tonight": false, "v": 2.6, "old": 2.0, "mv": 2}, {"rk": 13, "team": "Texans", "tonight": false, "v": 2.3, "old": 3.1, "mv": -3}, {"rk": 14, "team": "Rams", "tonight": false, "v": 2.0, "old": 6.2, "mv": -13}, {"rk": 15, "team": "Lions", "tonight": false, "v": 2.0, "old": 3.8, "mv": -7}, {"rk": 16, "team": "Patriots", "tonight": false, "v": 1.5, "old": 1.4, "mv": -1}, {"rk": 17, "team": "Steelers", "tonight": false, "v": 1.2, "old": 0.5, "mv": 0}, {"rk": 18, "team": "Packers", "tonight": false, "v": -0.1, "old": 4.0, "mv": -11}, {"rk": 19, "team": "Buccaneers", "tonight": false, "v": -0.2, "old": 0.2, "mv": -1}, {"rk": 20, "team": "Raiders", "tonight": false, "v": -0.6, "old": -3.2, "mv": 7}, {"rk": 21, "team": "Giants", "tonight": false, "v": -0.7, "old": -2.5, "mv": 4}, {"rk": 22, "team": "Cardinals", "tonight": false, "v": -0.9, "old": -5.0, "mv": 8}, {"rk": 23, "team": "Falcons", "tonight": false, "v": -1.8, "old": -1.1, "mv": -1}, {"rk": 24, "team": "Chargers", "tonight": false, "v": -1.8, "old": 2.3, "mv": -11}, {"rk": 25, "team": "Cowboys", "tonight": false, "v": -2.1, "old": -0.3, "mv": -5}, {"rk": 26, "team": "Jets", "tonight": false, "v": -2.3, "old": -5.5, "mv": 5}, {"rk": 27, "team": "Saints", "tonight": false, "v": -2.5, "old": -4.3, "mv": 2}, {"rk": 28, "team": "Colts", "tonight": false, "v": -3.4, "old": -0.8, "mv": -7}, {"rk": 29, "team": "Dolphins", "tonight": false, "v": -5.4, "old": -2.8, "mv": -3}, {"rk": 30, "team": "Panthers", "tonight": false, "v": -5.8, "old": -2.2, "mv": -6}, {"rk": 31, "team": "Titans", "tonight": false, "v": -6.9, "old": -3.7, "mv": -3}, {"rk": 32, "team": "Browns", "tonight": false, "v": -9.1, "old": -6.0, "mv": 0}], MX=9.1;
+let sortKey='rk', dir=1, page='1';
+const rk=document.getElementById('rk');
+const cols=[['rk','Rk',''],['team','Team',''],['v','Rating vs average team, neutral field',''],['v2','Pts','text-align:right'],['mv','Move','text-align:right']];
+function render(){
+  const rows=[...DATA].sort((a,b)=>{const k=sortKey==='v2'?'v':sortKey; const x=a[k],y=b[k]; return (typeof x==='string'? x.localeCompare(y) : x-y)*dir;});
+  let h=cols.map(([k,l,st])=>{const ak=k==='v'?'v2':k; const on=(sortKey===k||(k==='v'&&sortKey==='v2')); const g=on?(dir===1?' ▴':' ▾'):' ▾'; return `<div class="h${on?' on':''}" data-k="${k}" style="${st}"><button>${l}<span class="g">${g}</span></button></div>`;}).join('');
+  const lo=(+page-1)*10, hi=lo+10;
+  rows.forEach((d,i)=>{
+    if(i<lo||i>=hi) return;
+    const w=Math.abs(d.v)/MX*50;
+    const tag=d.rk===1?' <span class="tag">HIGHEST</span>':(d.rk===32?' <span class="tag lo">LOWEST</span>':'');
+    const mv=d.mv===0?'—':(d.mv>0?'▲'+d.mv:'▼'+(-d.mv)); const mc=d.mv===0?'':(d.mv>0?' up':' dn');
+    h+=`<div><span class="n">${d.rk}</span></div><div class="tm${d.team==='Broncos'?' bron':''}">${d.team}${d.tonight?'<small>tonight</small>':''}${tag}</div><div class="bar"><u></u><i class="${d.v>=0?'pos':'neg'}" style="width:${w.toFixed(1)}%"></i></div><div class="v">${d.v>0?'+':''}${d.v.toFixed(1)}</div><div class="mv${mc}">${mv}</div>`;
+  });
+  rk.innerHTML=h;
+  rk.querySelectorAll('.h button').forEach(b=>b.addEventListener('click',()=>{const k=b.parentElement.dataset.k; const key=k==='v2'?'v':k; if(sortKey===key){dir=-dir;} else {sortKey=key; dir=(key==='rk'||key==='team')?1:-1;} render();}));
+}
+document.querySelectorAll('.pg button').forEach(b=>b.addEventListener('click',()=>{page=b.dataset.pg; document.querySelectorAll('.pg button').forEach(x=>x.setAttribute('aria-selected',x===b)); render();}));
+render();
+
+// ---- slope chart: before vs after Week 1 ----
+(function(){
+  const TIER=[[4,'Contender','#f6d55c'],[2,'Playoff','#9be27a'],[-2,'Middle','#7fc3e0'],[-4,'Below','#f0954a'],[-Infinity,'Bottom','#ff6b6b']];
+  const tier=v=>TIER.find(t=>v>=t[0]);
+  const leg=document.getElementById('tierleg'); leg.className='vl box';
+  leg.innerHTML=TIER.map(t=>`<span><i class="dot" style="--c:${t[2]}"></i>${t[1]}</span>`).join('');
+  const before=[...DATA].sort((a,b)=>b.old-a.old);
+  const after=[...DATA].sort((a,b)=>a.rk-b.rk);
+  const RH=22, TOP=34, W=1100, LX=250, RX=850, PAD=6;
+  const H=TOP+RH*DATA.length+12;
+  const yB={}, yA={};
+  before.forEach((d,i)=>yB[d.team]=TOP+i*RH+RH/2);
+  after.forEach((d,i)=>yA[d.team]=TOP+i*RH+RH/2);
+  let g=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Slope chart of rank before and after Week 1">`;
+  g+=`<rect class="bg" x="0" y="0" width="${W}" height="${H}" rx="8"/>`;
+  g+=`<text class="col" x="${LX-PAD}" y="16" text-anchor="end">Before Week 1 · TEB</text><text class="col" x="${RX+PAD}" y="16">After Week 1 · Mack</text><text class="col" x="${W-30}" y="16" text-anchor="end">Δ</text>`;
+  DATA.forEach(d=>{ const t=tier(d.v); const y1=yB[d.team], y2=yA[d.team];
+    g+=`<path class="ln" stroke="${t[2]}" d="M${LX+PAD*2} ${y1} C ${LX+300} ${y1}, ${RX-300} ${y2}, ${RX-PAD*2} ${y2}"/>`; });
+  before.forEach((d,i)=>{ const y=yB[d.team]; const t=tier(d.v);
+    g+=`<text class="num" x="${LX-190}" y="${y+4}" text-anchor="end">${i+1}</text><text class="lab" x="${LX-180}" y="${y+4}"${d.team==='Broncos'?' fill="#ffb84d"':''}>${d.team}</text><text class="num" x="${LX-PAD}" y="${y+4}" text-anchor="end">${d.old>0?'+':''}${d.old.toFixed(1)}</text><circle cx="${LX+PAD*2}" cy="${y}" r="3.5" fill="${t[2]}"/>`; });
+  after.forEach((d,i)=>{ const y=yA[d.team]; const t=tier(d.v); const dv=d.v-d.old;
+    const mv=d.mv===0?'—':(d.mv>0?'▲'+d.mv:'▼'+(-d.mv)); const mc=d.mv===0?'#b9c3d6':(d.mv>0?'#9be27a':'#ff9c9c');
+    g+=`<circle cx="${RX-PAD*2}" cy="${y}" r="3.5" fill="${t[2]}"/><text class="num" x="${RX+PAD}" y="${y+4}">${i+1}</text><text class="lab" x="${RX+PAD+22}" y="${y+4}"${d.team==='Broncos'?' fill="#ffb84d"':''}>${d.team}${d.tonight?' ·':''}</text><text class="num" x="${RX+150}" y="${y+4}" text-anchor="end">${d.v>0?'+':''}${d.v.toFixed(1)}</text><text class="d" fill="${mc}" x="${W-30}" y="${y+4}" text-anchor="end">${mv}</text>`; });
+  g+='</svg>';
+  document.getElementById('slope').innerHTML=g;
+})();
+</script>
 </body>
 </html>
