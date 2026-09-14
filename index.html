@@ -39,7 +39,7 @@
   .s{font-size:8.8px;fill:var(--muted)}
   .f{font-size:9px;fill:var(--fg);font-family:ui-monospace,Menlo,monospace}
   .arrow{stroke:var(--muted);stroke-width:1.3;fill:none;marker-end:url(#ah)}
-  .arrow.mack{stroke:var(--added);stroke-dasharray:4 3}
+  .arrow.added{stroke:var(--added);stroke-dasharray:4 3}
   code{font-family:ui-monospace,Menlo,monospace;font-size:.92em;background:color-mix(in srgb,var(--fg) 6%,transparent);padding:0 .3em;border-radius:4px}
   .legend{display:grid;grid-template-columns:auto 1fr;gap:.6rem 1rem;font-size:1em;align-items:start}
   .sw{display:inline-block;width:1.1em;height:1.1em;border-radius:4px;border:1.5px solid var(--c);background:color-mix(in srgb,var(--c) 16%,var(--card));vertical-align:-.15em}
@@ -177,8 +177,8 @@
     <text class="t" x="260" y="370" text-anchor="middle">Added: rating update (not in Todd's sheet)</text>
     <text class="f" x="260" y="386" text-anchor="middle">new = old + 0.2 × clamp(actual − projected, ±21)</text>
     <text class="s" x="260" y="399" text-anchor="middle">winner up, loser down by the same amount; ratings sum is conserved</text>
-    <path class="arrow mack" d="M265 322 V352"/>
-    <path class="arrow mack" d="M460 379 H495 V40 H510"/>
+    <path class="arrow added" d="M265 322 V352"/>
+    <path class="arrow added" d="M460 379 H495 V40 H510"/>
   </svg>
 </section>
 
