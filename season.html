@@ -52,7 +52,8 @@
   .src b{font-style:normal;font-family:'Encode Sans Semi Condensed',sans-serif;letter-spacing:.1em;color:#fff}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
   @media (max-width:700px){.two{grid-template-columns:1fr}}
-  .two ul{margin:.2em 0 0;padding-left:1.2em}
+  .two ol{margin:.2em 0 0;padding-left:1.4em}
+  .two li.bron{color:#c2410c;font-weight:600}
   .two li b{font-family:'Fira Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;margin-left:.3em}
   footer{margin-top:1.2rem;font-size:.85rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:.4rem;font-style:italic}
 </style>
@@ -61,7 +62,7 @@
 <body>
 <h1><span class="pre">Charted:</span> How the 2026 NFL Season Projects After Week 1</h1>
 <p class="byline">By <b>Mack</b> (Analysis); <b>ΖΓ636</b> (Adjustments) &nbsp;·&nbsp; September 16, 2026 &nbsp;·&nbsp; companion to <a href="index.html">the Week 1 power rankings</a></p>
-<!-- STAMP --><p class="stamp">Published <b>Sep 16, 2026, 10:23 AM PT</b> &nbsp;·&nbsp; Updated <b>Sep 16, 2026, 11:19 AM PT</b></p><!-- /STAMP -->
+<!-- STAMP --><p class="stamp">Published <b>Sep 16, 2026, 10:23 AM PT</b> &nbsp;·&nbsp; Updated <b>Sep 16, 2026, 4:12 PM PT</b></p><!-- /STAMP -->
 <p class="lede">Take ΖΓ559's ratings as they stand after Week 1, run every one of the 256 remaining games through his own spread formula, turn each projected margin into a win probability, and add them up. What comes out is an expected record for all 32 teams and a projected winner in each division.</p>
 
 <section class="viz" aria-label="Season projection by division">
@@ -82,7 +83,8 @@
 
 <h2>Remaining schedule strength</h2>
 <p>Average rating of each team's remaining opponents, adjusted for where the game is played. Positive means a harder road.</p>
-<div class="two"><div><h3>Hardest</h3><ul><li>Chargers <b>+2.6</b></li><li>Dolphins <b>+2.0</b></li><li>Rams <b>+1.6</b></li><li>Cardinals <b>+1.6</b></li><li>Cowboys <b>+1.5</b></li></ul></div><div><h3>Softest</h3><ul><li>Ravens <b>-1.0</b></li><li>Saints <b>-0.6</b></li><li>Buccaneers <b>-0.4</b></li><li>Bengals <b>-0.3</b></li><li>Eagles <b>-0.2</b></li></ul></div></div>
+<div class="two"><div><h3>Ten hardest</h3><ol><li>Chargers <b>+2.6</b></li><li>Dolphins <b>+2.0</b></li><li>Rams <b>+1.6</b></li><li>Cardinals <b>+1.6</b></li><li>Cowboys <b>+1.5</b></li><li>Jaguars <b>+1.4</b></li><li>Titans <b>+1.2</b></li><li>Jets <b>+1.1</b></li><li>Patriots <b>+1.1</b></li><li>Raiders <b>+1.0</b></li></ol></div><div><h3>Ten easiest</h3><ol><li>Ravens <b>−1.0</b></li><li>Saints <b>−0.6</b></li><li>Buccaneers <b>−0.4</b></li><li>Bengals <b>−0.3</b></li><li>Eagles <b>−0.2</b></li><li>Lions <b>0.0</b></li><li>Browns <b>0.0</b></li><li class=bron>Broncos <b>+0.1</b></li><li>Texans <b>+0.1</b></li><li>Steelers <b>+0.2</b></li></ol></div></div>
+<p>The whole league sits within 3.6 points from hardest to easiest, less than a strong team's home-field edge, so schedule shifts a projection by a game or so, not a tier. Chargers carry the hardest road; Ravens pair the softest slate with the top rating, which is why they lead the projection. The Broncos are 8th-easiest, part of why they project near .500 despite the Week 1 hit.</p>
 
 <h2>How the projection works</h2>
 <p>For each remaining game the projected home margin is ΖΓ559's formula: home-field advantage plus the difference in ratings, with a flat 0.2 at the eight neutral-site games. That margin becomes a win probability by assuming results scatter around the projection with a spread of 13.5 points, which is my parameter and not part of his sheet. A team favored by 3 wins about 59% of the time; favored by 10, about 77%. Expected wins add those probabilities to the wins already in hand. The favorite column is what the sheet would say if it picked every game outright, and the gap between the two columns shows how many coin flips a team faces.</p>
