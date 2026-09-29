@@ -33,6 +33,263 @@ h2{font-size:22px;font-weight:600;color:var(--navy);border-bottom:2px solid var(
 h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
 .games{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
 .g{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:grid;gap:10px;position:relative}
+/* team-colored cards: card takes the colors of Mack's SU pick (ESPN teams API, fetched 2026-09-28) */
+.g.pick-Cardinals{--card:#a40227;--paper:#af2041;--ink:#ffffff;--muted:#e4b3be;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#af2041;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#a40227;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Cardinals .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Cardinals .lbl{color:#e4b3be}
+.g.pick-Cardinals .score,.g.pick-Cardinals select{background:#af2041;color:#ffffff;border-color:#ffffff}
+.g.pick-Cardinals .chip{background:#af2041;color:#ffffff}
+.g.pick-Cardinals .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Cardinals .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Cardinals.final{background:#a40227}
+.g.pick-Falcons{--card:#a71930;--paper:#b23549;--ink:#ffffff;--muted:#e5bac1;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#b23549;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#a71930;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Falcons .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Falcons .lbl{color:#e5bac1}
+.g.pick-Falcons .score,.g.pick-Falcons select{background:#b23549;color:#ffffff;border-color:#ffffff}
+.g.pick-Falcons .chip{background:#b23549;color:#ffffff}
+.g.pick-Falcons .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Falcons .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Falcons.final{background:#a71930}
+.g.pick-Ravens{--card:#29126f;--paper:#432e80;--ink:#ffffff;--muted:#bfb8d4;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#432e80;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#29126f;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Ravens .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Ravens .lbl{color:#bfb8d4}
+.g.pick-Ravens .score,.g.pick-Ravens select{background:#432e80;color:#ffffff;border-color:#ffffff}
+.g.pick-Ravens .chip{background:#432e80;color:#ffffff}
+.g.pick-Ravens .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Ravens .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Ravens.final{background:#29126f}
+.g.pick-Bills{--card:#00338d;--paper:#1f4b9b;--ink:#ffffff;--muted:#b2c2dd;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#1f4b9b;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#00338d;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Bills .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Bills .lbl{color:#b2c2dd}
+.g.pick-Bills .score,.g.pick-Bills select{background:#1f4b9b;color:#ffffff;border-color:#ffffff}
+.g.pick-Bills .chip{background:#1f4b9b;color:#ffffff}
+.g.pick-Bills .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Bills .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Bills.final{background:#00338d}
+.g.pick-Panthers{--card:#0085ca;--paper:#007aba;--ink:#111111;--muted:#0c3448;--line:#000000;--navy:#000000;--orange:#000000;--orange-soft:#000000;--field:#007aba;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#0085ca;color:#111111;border:2px solid #000000;box-shadow:inset 6px 0 0 #000000}
+.g.pick-Panthers .chip.mack{color:#ffffff;background:#000000;border-color:#000000}
+.g.pick-Panthers .lbl{color:#0c3448}
+.g.pick-Panthers .score,.g.pick-Panthers select{background:#007aba;color:#111111;border-color:#000000}
+.g.pick-Panthers .chip{background:#007aba;color:#111111}
+.g.pick-Panthers .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Panthers .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Panthers.final{background:#0085ca}
+.g.pick-Bears{--card:#0b1c3a;--paper:#283752;--ink:#ffffff;--muted:#b6bbc4;--line:#e64100;--navy:#e64100;--orange:#e64100;--orange-soft:#e64100;--field:#283752;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#0b1c3a;color:#ffffff;border:2px solid #e64100;box-shadow:inset 6px 0 0 #e64100}
+.g.pick-Bears .chip.mack{color:#111111;background:#e64100;border-color:#e64100}
+.g.pick-Bears .lbl{color:#b6bbc4}
+.g.pick-Bears .score,.g.pick-Bears select{background:#283752;color:#ffffff;border-color:#e64100}
+.g.pick-Bears .chip{background:#283752;color:#ffffff}
+.g.pick-Bears .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Bears .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Bears.final{background:#0b1c3a}
+.g.pick-Bengals{--card:#fb4f14;--paper:#e74912;--ink:#111111;--muted:#572412;--line:#000000;--navy:#000000;--orange:#000000;--orange-soft:#000000;--field:#e74912;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#fb4f14;color:#111111;border:2px solid #000000;box-shadow:inset 6px 0 0 #000000}
+.g.pick-Bengals .chip.mack{color:#ffffff;background:#000000;border-color:#000000}
+.g.pick-Bengals .lbl{color:#572412}
+.g.pick-Bengals .score,.g.pick-Bengals select{background:#e74912;color:#111111;border-color:#000000}
+.g.pick-Bengals .chip{background:#e74912;color:#111111}
+.g.pick-Bengals .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Bengals .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Bengals.final{background:#fb4f14}
+.g.pick-Browns{--card:#472a08;--paper:#5d4426;--ink:#ffffff;--muted:#c8bfb5;--line:#ff3c00;--navy:#ff3c00;--orange:#ff3c00;--orange-soft:#ff3c00;--field:#5d4426;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#472a08;color:#ffffff;border:2px solid #ff3c00;box-shadow:inset 6px 0 0 #ff3c00}
+.g.pick-Browns .chip.mack{color:#111111;background:#ff3c00;border-color:#ff3c00}
+.g.pick-Browns .lbl{color:#c8bfb5}
+.g.pick-Browns .score,.g.pick-Browns select{background:#5d4426;color:#ffffff;border-color:#ff3c00}
+.g.pick-Browns .chip{background:#5d4426;color:#ffffff}
+.g.pick-Browns .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Browns .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Browns.final{background:#472a08}
+.g.pick-Cowboys{--card:#002a5c;--paper:#1f4470;--ink:#ffffff;--muted:#b2bfce;--line:#b0b7bc;--navy:#b0b7bc;--orange:#b0b7bc;--orange-soft:#b0b7bc;--field:#1f4470;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#002a5c;color:#ffffff;border:2px solid #b0b7bc;box-shadow:inset 6px 0 0 #b0b7bc}
+.g.pick-Cowboys .chip.mack{color:#111111;background:#b0b7bc;border-color:#b0b7bc}
+.g.pick-Cowboys .lbl{color:#b2bfce}
+.g.pick-Cowboys .score,.g.pick-Cowboys select{background:#1f4470;color:#ffffff;border-color:#b0b7bc}
+.g.pick-Cowboys .chip{background:#1f4470;color:#ffffff}
+.g.pick-Cowboys .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Cowboys .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Cowboys.final{background:#002a5c}
+.g.pick-Broncos{--card:#0a2343;--paper:#273d5a;--ink:#ffffff;--muted:#b6bdc7;--line:#fc4c02;--navy:#fc4c02;--orange:#fc4c02;--orange-soft:#fc4c02;--field:#273d5a;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#0a2343;color:#ffffff;border:2px solid #fc4c02;box-shadow:inset 6px 0 0 #fc4c02}
+.g.pick-Broncos .chip.mack{color:#111111;background:#fc4c02;border-color:#fc4c02}
+.g.pick-Broncos .lbl{color:#b6bdc7}
+.g.pick-Broncos .score,.g.pick-Broncos select{background:#273d5a;color:#ffffff;border-color:#fc4c02}
+.g.pick-Broncos .chip{background:#273d5a;color:#ffffff}
+.g.pick-Broncos .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Broncos .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Broncos.final{background:#0a2343}
+.g.pick-Lions{--card:#0076b6;--paper:#1f86bf;--ink:#ffffff;--muted:#b2d6e9;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#1f86bf;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#0076b6;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Lions .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Lions .lbl{color:#b2d6e9}
+.g.pick-Lions .score,.g.pick-Lions select{background:#1f86bf;color:#ffffff;border-color:#ffffff}
+.g.pick-Lions .chip{background:#1f86bf;color:#ffffff}
+.g.pick-Lions .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Lions .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Lions.final{background:#0076b6}
+.g.pick-Packers{--card:#204e32;--paper:#3b634b;--ink:#ffffff;--muted:#bccac2;--line:#ffb612;--navy:#ffb612;--orange:#ffb612;--orange-soft:#ffb612;--field:#3b634b;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#204e32;color:#ffffff;border:2px solid #ffb612;box-shadow:inset 6px 0 0 #ffb612}
+.g.pick-Packers .chip.mack{color:#111111;background:#ffb612;border-color:#ffb612}
+.g.pick-Packers .lbl{color:#bccac2}
+.g.pick-Packers .score,.g.pick-Packers select{background:#3b634b;color:#ffffff;border-color:#ffb612}
+.g.pick-Packers .chip{background:#3b634b;color:#ffffff}
+.g.pick-Packers .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Packers .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Packers.final{background:#204e32}
+.g.pick-Texans{--card:#021018;--paper:#202d34;--ink:#ffffff;--muted:#b3b7ba;--line:#eb0028;--navy:#eb0028;--orange:#eb0028;--orange-soft:#eb0028;--field:#202d34;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#021018;color:#ffffff;border:2px solid #eb0028;box-shadow:inset 6px 0 0 #eb0028}
+.g.pick-Texans .chip.mack{color:#ffffff;background:#eb0028;border-color:#eb0028}
+.g.pick-Texans .lbl{color:#b3b7ba}
+.g.pick-Texans .score,.g.pick-Texans select{background:#202d34;color:#ffffff;border-color:#eb0028}
+.g.pick-Texans .chip{background:#202d34;color:#ffffff}
+.g.pick-Texans .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Texans .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Texans.final{background:#021018}
+.g.pick-Colts{--card:#003b75;--paper:#1f5386;--ink:#ffffff;--muted:#b2c4d6;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#1f5386;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#003b75;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Colts .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Colts .lbl{color:#b2c4d6}
+.g.pick-Colts .score,.g.pick-Colts select{background:#1f5386;color:#ffffff;border-color:#ffffff}
+.g.pick-Colts .chip{background:#1f5386;color:#ffffff}
+.g.pick-Colts .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Colts .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Colts.final{background:#003b75}
+.g.pick-Jaguars{--card:#007487;--paper:#1f8595;--ink:#ffffff;--muted:#b2d5db;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#1f8595;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#007487;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Jaguars .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Jaguars .lbl{color:#b2d5db}
+.g.pick-Jaguars .score,.g.pick-Jaguars select{background:#1f8595;color:#ffffff;border-color:#ffffff}
+.g.pick-Jaguars .chip{background:#1f8595;color:#ffffff}
+.g.pick-Jaguars .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Jaguars .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Jaguars.final{background:#007487}
+.g.pick-Chiefs{--card:#e31837;--paper:#e6344f;--ink:#ffffff;--muted:#f7bac3;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#e6344f;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#e31837;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Chiefs .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Chiefs .lbl{color:#f7bac3}
+.g.pick-Chiefs .score,.g.pick-Chiefs select{background:#e6344f;color:#ffffff;border-color:#ffffff}
+.g.pick-Chiefs .chip{background:#e6344f;color:#ffffff}
+.g.pick-Chiefs .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Chiefs .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Chiefs.final{background:#e31837}
+.g.pick-Raiders{--card:#000000;--paper:#1f1f1f;--ink:#ffffff;--muted:#b2b2b2;--line:#a5acaf;--navy:#a5acaf;--orange:#a5acaf;--orange-soft:#a5acaf;--field:#1f1f1f;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#000000;color:#ffffff;border:2px solid #a5acaf;box-shadow:inset 6px 0 0 #a5acaf}
+.g.pick-Raiders .chip.mack{color:#111111;background:#a5acaf;border-color:#a5acaf}
+.g.pick-Raiders .lbl{color:#b2b2b2}
+.g.pick-Raiders .score,.g.pick-Raiders select{background:#1f1f1f;color:#ffffff;border-color:#a5acaf}
+.g.pick-Raiders .chip{background:#1f1f1f;color:#ffffff}
+.g.pick-Raiders .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Raiders .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Raiders.final{background:#000000}
+.g.pick-Chargers{--card:#0080c6;--paper:#0076b6;--ink:#111111;--muted:#0c3247;--line:#111111;--navy:#111111;--orange:#111111;--orange-soft:#111111;--field:#0076b6;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#0080c6;color:#111111;border:2px solid #111111;box-shadow:inset 6px 0 0 #111111}
+.g.pick-Chargers .chip.mack{color:#ffffff;background:#111111;border-color:#111111}
+.g.pick-Chargers .lbl{color:#0c3247}
+.g.pick-Chargers .score,.g.pick-Chargers select{background:#0076b6;color:#111111;border-color:#111111}
+.g.pick-Chargers .chip{background:#0076b6;color:#111111}
+.g.pick-Chargers .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Chargers .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Chargers.final{background:#0080c6}
+.g.pick-Rams{--card:#003594;--paper:#1f4da1;--ink:#ffffff;--muted:#b2c2df;--line:#ffd100;--navy:#ffd100;--orange:#ffd100;--orange-soft:#ffd100;--field:#1f4da1;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#003594;color:#ffffff;border:2px solid #ffd100;box-shadow:inset 6px 0 0 #ffd100}
+.g.pick-Rams .chip.mack{color:#111111;background:#ffd100;border-color:#ffd100}
+.g.pick-Rams .lbl{color:#b2c2df}
+.g.pick-Rams .score,.g.pick-Rams select{background:#1f4da1;color:#ffffff;border-color:#ffd100}
+.g.pick-Rams .chip{background:#1f4da1;color:#ffffff}
+.g.pick-Rams .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Rams .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Rams.final{background:#003594}
+.g.pick-Dolphins{--card:#008e97;--paper:#00838b;--ink:#111111;--muted:#0c3639;--line:#111111;--navy:#111111;--orange:#111111;--orange-soft:#111111;--field:#00838b;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#008e97;color:#111111;border:2px solid #111111;box-shadow:inset 6px 0 0 #111111}
+.g.pick-Dolphins .chip.mack{color:#ffffff;background:#111111;border-color:#111111}
+.g.pick-Dolphins .lbl{color:#0c3639}
+.g.pick-Dolphins .score,.g.pick-Dolphins select{background:#00838b;color:#111111;border-color:#111111}
+.g.pick-Dolphins .chip{background:#00838b;color:#111111}
+.g.pick-Dolphins .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Dolphins .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Dolphins.final{background:#008e97}
+.g.pick-Vikings{--card:#4f2683;--paper:#644092;--ink:#ffffff;--muted:#cabeda;--line:#ffc62f;--navy:#ffc62f;--orange:#ffc62f;--orange-soft:#ffc62f;--field:#644092;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#4f2683;color:#ffffff;border:2px solid #ffc62f;box-shadow:inset 6px 0 0 #ffc62f}
+.g.pick-Vikings .chip.mack{color:#111111;background:#ffc62f;border-color:#ffc62f}
+.g.pick-Vikings .lbl{color:#cabeda}
+.g.pick-Vikings .score,.g.pick-Vikings select{background:#644092;color:#ffffff;border-color:#ffc62f}
+.g.pick-Vikings .chip{background:#644092;color:#ffffff}
+.g.pick-Vikings .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Vikings .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Vikings.final{background:#4f2683}
+.g.pick-Patriots{--card:#002a5c;--paper:#1f4470;--ink:#ffffff;--muted:#b2bfce;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#1f4470;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#002a5c;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Patriots .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Patriots .lbl{color:#b2bfce}
+.g.pick-Patriots .score,.g.pick-Patriots select{background:#1f4470;color:#ffffff;border-color:#ffffff}
+.g.pick-Patriots .chip{background:#1f4470;color:#ffffff}
+.g.pick-Patriots .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Patriots .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Patriots.final{background:#002a5c}
+.g.pick-Saints{--card:#d3bc8d;--paper:#c2ad82;--ink:#111111;--muted:#4b4436;--line:#000000;--navy:#000000;--orange:#000000;--orange-soft:#000000;--field:#c2ad82;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#d3bc8d;color:#111111;border:2px solid #000000;box-shadow:inset 6px 0 0 #000000}
+.g.pick-Saints .chip.mack{color:#ffffff;background:#000000;border-color:#000000}
+.g.pick-Saints .lbl{color:#4b4436}
+.g.pick-Saints .score,.g.pick-Saints select{background:#c2ad82;color:#111111;border-color:#000000}
+.g.pick-Saints .chip{background:#c2ad82;color:#111111}
+.g.pick-Saints .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Saints .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Saints.final{background:#d3bc8d}
+.g.pick-Giants{--card:#003c7f;--paper:#1f538e;--ink:#ffffff;--muted:#b2c4d9;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#1f538e;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#003c7f;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Giants .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Giants .lbl{color:#b2c4d9}
+.g.pick-Giants .score,.g.pick-Giants select{background:#1f538e;color:#ffffff;border-color:#ffffff}
+.g.pick-Giants .chip{background:#1f538e;color:#ffffff}
+.g.pick-Giants .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Giants .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Giants.final{background:#003c7f}
+.g.pick-Jets{--card:#115740;--paper:#2e6b57;--ink:#ffffff;--muted:#b8cdc6;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#2e6b57;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#115740;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Jets .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Jets .lbl{color:#b8cdc6}
+.g.pick-Jets .score,.g.pick-Jets select{background:#2e6b57;color:#ffffff;border-color:#ffffff}
+.g.pick-Jets .chip{background:#2e6b57;color:#ffffff}
+.g.pick-Jets .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Jets .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Jets.final{background:#115740}
+.g.pick-Eagles{--card:#06424d;--paper:#245962;--ink:#ffffff;--muted:#b4c6ca;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#245962;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#06424d;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Eagles .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Eagles .lbl{color:#b4c6ca}
+.g.pick-Eagles .score,.g.pick-Eagles select{background:#245962;color:#ffffff;border-color:#ffffff}
+.g.pick-Eagles .chip{background:#245962;color:#ffffff}
+.g.pick-Eagles .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Eagles .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Eagles.final{background:#06424d}
+.g.pick-Steelers{--card:#000000;--paper:#1f1f1f;--ink:#ffffff;--muted:#b2b2b2;--line:#ffb612;--navy:#ffb612;--orange:#ffb612;--orange-soft:#ffb612;--field:#1f1f1f;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#000000;color:#ffffff;border:2px solid #ffb612;box-shadow:inset 6px 0 0 #ffb612}
+.g.pick-Steelers .chip.mack{color:#111111;background:#ffb612;border-color:#ffb612}
+.g.pick-Steelers .lbl{color:#b2b2b2}
+.g.pick-Steelers .score,.g.pick-Steelers select{background:#1f1f1f;color:#ffffff;border-color:#ffb612}
+.g.pick-Steelers .chip{background:#1f1f1f;color:#ffffff}
+.g.pick-Steelers .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Steelers .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Steelers.final{background:#000000}
+.g.pick-49ers{--card:#aa0000;--paper:#b41f1f;--ink:#ffffff;--muted:#e6b2b2;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#b41f1f;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#aa0000;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-49ers .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-49ers .lbl{color:#e6b2b2}
+.g.pick-49ers .score,.g.pick-49ers select{background:#b41f1f;color:#ffffff;border-color:#ffffff}
+.g.pick-49ers .chip{background:#b41f1f;color:#ffffff}
+.g.pick-49ers .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-49ers .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-49ers.final{background:#aa0000}
+.g.pick-Seahawks{--card:#002a5c;--paper:#1f4470;--ink:#ffffff;--muted:#b2bfce;--line:#69be28;--navy:#69be28;--orange:#69be28;--orange-soft:#69be28;--field:#1f4470;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#002a5c;color:#ffffff;border:2px solid #69be28;box-shadow:inset 6px 0 0 #69be28}
+.g.pick-Seahawks .chip.mack{color:#111111;background:#69be28;border-color:#69be28}
+.g.pick-Seahawks .lbl{color:#b2bfce}
+.g.pick-Seahawks .score,.g.pick-Seahawks select{background:#1f4470;color:#ffffff;border-color:#69be28}
+.g.pick-Seahawks .chip{background:#1f4470;color:#ffffff}
+.g.pick-Seahawks .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Seahawks .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Seahawks.final{background:#002a5c}
+.g.pick-Buccaneers{--card:#bd1c36;--paper:#c5374e;--ink:#ffffff;--muted:#ebbbc3;--line:#ffffff;--navy:#ffffff;--orange:#ffffff;--orange-soft:#ffffff;--field:#c5374e;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#bd1c36;color:#ffffff;border:2px solid #ffffff;box-shadow:inset 6px 0 0 #ffffff}
+.g.pick-Buccaneers .chip.mack{color:#111111;background:#ffffff;border-color:#ffffff}
+.g.pick-Buccaneers .lbl{color:#ebbbc3}
+.g.pick-Buccaneers .score,.g.pick-Buccaneers select{background:#c5374e;color:#ffffff;border-color:#ffffff}
+.g.pick-Buccaneers .chip{background:#c5374e;color:#ffffff}
+.g.pick-Buccaneers .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Buccaneers .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Buccaneers.final{background:#bd1c36}
+.g.pick-Titans{--card:#4495d2;--paper:#3f89c1;--ink:#111111;--muted:#20394b;--line:#001532;--navy:#001532;--orange:#001532;--orange-soft:#001532;--field:#3f89c1;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#4495d2;color:#111111;border:2px solid #001532;box-shadow:inset 6px 0 0 #001532}
+.g.pick-Titans .chip.mack{color:#ffffff;background:#001532;border-color:#001532}
+.g.pick-Titans .lbl{color:#20394b}
+.g.pick-Titans .score,.g.pick-Titans select{background:#3f89c1;color:#111111;border-color:#001532}
+.g.pick-Titans .chip{background:#3f89c1;color:#111111}
+.g.pick-Titans .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Titans .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Titans.final{background:#4495d2}
+.g.pick-Commanders{--card:#5a1414;--paper:#6e3030;--ink:#ffffff;--muted:#ceb8b8;--line:#ffb612;--navy:#ffb612;--orange:#ffb612;--orange-soft:#ffb612;--field:#6e3030;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;background:#5a1414;color:#ffffff;border:2px solid #ffb612;box-shadow:inset 6px 0 0 #ffb612}
+.g.pick-Commanders .chip.mack{color:#111111;background:#ffb612;border-color:#ffb612}
+.g.pick-Commanders .lbl{color:#ceb8b8}
+.g.pick-Commanders .score,.g.pick-Commanders select{background:#6e3030;color:#ffffff;border-color:#ffb612}
+.g.pick-Commanders .chip{background:#6e3030;color:#ffffff}
+.g.pick-Commanders .chip.ok{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.g.pick-Commanders .chip.no{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.g.pick-Commanders.final{background:#5a1414}
 .g.bron{--card:#002244;--paper:#0d2f57;--ink:#ffffff;--muted:#c9d3e0;--line:#FB4F14;--navy:#FB4F14;--orange:#FB4F14;--orange-soft:#FB4F14;--field:#0d2f57;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;
   background:#002244;color:#fff;border:2px solid #FB4F14;box-shadow:inset 6px 0 0 #FB4F14}
 .g.bron .chip.mack{color:#002244;background:#FB4F14;border-color:#FB4F14}
@@ -149,7 +406,7 @@ function card(g){
     ...PEOPLE.map(p => ["su","ats","ou"].map(k => r.ppl[p][k] ? chip(`${p} ${k.toUpperCase()} ${r.ppl[p][k]==="ok"?"✓":r.ppl[p][k]==="no"?"✗":"push"}`, r.ppl[p][k]) : "").join("")),
     chip(`Total ${r.total} ${r.total>g.ou?"over":r.total<g.ou?"under":"push"}`, r.total===g.ou?"push":"")
   ].join("") : "";
-  return `<article class="g ${g.bron?"bron":""} ${r?"final":""}" data-id="${g.id}">
+  return `<article class="g pick-${g.su.replace(/[^A-Za-z0-9]/g,"")} ${g.bron?"bron":""} ${r?"final":""}" data-id="${g.id}">
     <span class="saved" id="sv-${g.id}">saved</span>
     <div class="kick">${g.kick}${g.qb?" · QB change":""}</div>
     <div class="teams">
