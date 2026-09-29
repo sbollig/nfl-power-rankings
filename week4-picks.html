@@ -336,7 +336,7 @@ h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
   <header>
     <div class="lbl">NFL 2026 · Week 4 · ratings after Week 3 (all 16 final)</div>
     <h1>Week 4 <span>Board</span></h1>
-    <div class="sub">Mack's line, the DraftKings market (via ESPN, fetched Sep 28 5:15 PM PT), and his pick for every game. Enter Todd's, Ryota's and Scott's winners, then the finals as the games go; it saves in this browser.</div>
+    <div class="sub">Mack's line, the DraftKings market (via ESPN, fetched Sep 28 5:15 PM PT), and his pick for every game. Enter Todd's, Ryota's and Scott's winners, then the finals as the games go. Everything saves to a shared board, so all three of you see the same page.</div>
   </header>
 
   <section class="rec">
@@ -349,7 +349,7 @@ h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
   </section>
 
   <section class="tiles" id="tiles"></section>
-  <div class="status"><span class="dot" id="dbdot"></span><span id="dbmsg">Checking storage…</span></div>
+  <div class="status"><span class="dot" id="dbdot"></span><span id="dbmsg">Connecting to the shared board…</span></div>
 
   <div id="windows"></div>
 
@@ -357,7 +357,7 @@ h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
     <p><b>How to read a card.</b> Lines are home-side, book sign: a negative number means the home team is favored by that much. <b>Mack</b> is his line after this week's verified injury hits. <b>Edge</b> is his line minus the market; he leans against the spread only at 2 points or more. The win % is his straight-up confidence.</p>
     <p><b>Key injuries</b> are the top three per team from the ESPN injury report (Out, IR, Doubtful, Questionable); the arrow shows the next healthy player at that spot on the ESPN depth chart. "Depth piece" means the injured player was not a starter. Fetched Sep 28. Picks were re-read against the replacements: none changed; the Buccaneers' rookie starter and Justin Jefferson's status are the two to watch.</p>
     <p><b>QB notes applied.</b> Bears: Williams out, Bagent starts. Buccaneers: Mayfield out, rookie Jalon Daniels starts. Giants: Dart on IR, Winston starts. Commanders: Daniels doubtful, Mariota likely. Bills: Allen expected to play.</p>
-    <p>Prepared by: Mack. Picks and finals stay in this browser only; the ratings update uses the official finals. <a href="index.html">Home</a> · <a href="rankings.html">Rankings</a> · <a href="season.html">Season projection</a></p>
+    <p>Prepared by: Mack. Picks and finals are shared across devices (refreshes every 20 seconds); the ratings update uses the official finals. <a href="index.html">Home</a> · <a href="rankings.html">Rankings</a> · <a href="season.html">Season projection</a></p>
   </footer>
 </div>
 
@@ -458,29 +458,53 @@ function tiles(){
   $("#tiles").innerHTML = t("Finals in", finals, "/ 16") + t("Mack straight up", `${su[0]}`, `/ ${su[1]}`) + t("Mack ATS leans", `${ats[0]}`, `/ ${ats[1]}`) + PEOPLE.map(p => t(p, `${rec[p].su[0]}`, `/ ${rec[p].su[1]}`)).join("");
 }
 
-// ---- persistence: this browser only (localStorage) ----
-const KEY = "wk04-picks";
-const PEOPLE = ["Todd","Ryota","Scott"];
-function load(){ try{ Object.assign(state, JSON.parse(localStorage.getItem(KEY)||"{}")); }catch(e){} }
+// ---- persistence: shared store (Google Apps Script web app, Mack 2026-09-29) + local cache ----
+const STORE = "https://script.google.com/macros/s/AKfycbwy0C0StLOn41vJQOeqBElzg1QyAu84evLOujqtUO_0bKWTL3v_WS-YBCjaUgnvhjat/exec";
+const WEEK = 4, KEY = "wk04-cache";
+function loadCache(){ try{ Object.assign(state, JSON.parse(localStorage.getItem(KEY)||"{}")); }catch(e){} }
+function saveCache(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+function setDb(k,msg){ $("#dbdot").className="dot "+k; $("#dbmsg").textContent=msg; }
 const timers = {};
 function queueSave(id){
   const s = state[id] = state[id] || {};
+  const before = JSON.stringify(s);
   s.as = $("#as-"+id).value.trim(); s.hs = $("#hs-"+id).value.trim();
   s.picks = {}; for (const p of PEOPLE) s.picks[p] = { su: $("#su-"+p+"-"+id).value };
-  clearTimeout(timers[id]); timers[id] = setTimeout(() => save(id), 400);
-  tiles();
+  saveCache(); tiles();
+  clearTimeout(timers[id]); timers[id] = setTimeout(() => push(id, before), 500);
 }
-function save(id){
-  try { localStorage.setItem(KEY, JSON.stringify(state));
-        const el=$("#sv-"+id); el.classList.add("show"); setTimeout(()=>el.classList.remove("show"),1200); }
-  catch(e){ setDb("off","This browser is not keeping entries (private window or storage blocked)."); }
+async function push(id, before){
+  const s = state[id]; const prev = before ? JSON.parse(before) : {};
+  const calls = [];
+  for (const p of PEOPLE){ const v = s.picks[p].su; if (v !== ((prev.picks||{})[p]||{}).su) calls.push({week:WEEK, game:id, person:p, su:v}); }
+  if (s.as !== (prev.as||"") || s.hs !== (prev.hs||"")) calls.push({week:WEEK, game:id, as:s.as, hs:s.hs});
+  try {
+    for (const body of calls) await fetch(STORE, {method:"POST", body: JSON.stringify(body)});
+    const el=$("#sv-"+id); el.classList.add("show"); setTimeout(()=>el.classList.remove("show"),1200);
+    setDb("on","Saved to the shared board. Everyone sees the same picks and scores.");
+    await pull(false);
+  } catch(e){ setDb("off","Could not reach the shared board; your entry is kept on this device and will show again here. Try later."); }
 }
-function setDb(k,msg){ $("#dbdot").className="dot "+k; $("#dbmsg").textContent=msg; }
+async function pull(quiet){
+  try {
+    const r = await fetch(STORE + "?week=" + WEEK, {cache:"no-store"}); const j = await r.json();
+    if (!j.ok) throw new Error(j.error||"store error");
+    let changed=false;
+    for (const [id,row] of Object.entries(j.data||{})){
+      const cur = state[id] || {}; const nxt = {as: row.as||"", hs: row.hs||"", picks:{}};
+      for (const p of PEOPLE) nxt.picks[p] = {su: ((row.picks||{})[p]||{}).su || ""};
+      if (JSON.stringify(cur.as||"")!==JSON.stringify(nxt.as) || JSON.stringify(cur.hs||"")!==JSON.stringify(nxt.hs) || JSON.stringify(cur.picks||{})!==JSON.stringify(nxt.picks)){ state[id]=nxt; changed=true; }
+    }
+    saveCache();
+    if (changed && !document.activeElement?.closest?.(".g")) render(); else tiles();
+    if (!quiet) setDb("on","Connected to the shared board. Picks and scores are the same on every device.");
+  } catch(e){ if(!quiet) setDb("off","Shared board not reachable right now; showing what this device last saw."); }
+}
 document.addEventListener("input", e => { const a = e.target.closest?.(".g"); if(a) queueSave(a.dataset.id); });
 document.addEventListener("change", e => { const a = e.target.closest?.(".g"); if(a) queueSave(a.dataset.id); });
 document.addEventListener("focusout", e => { const a = e.target.closest?.(".g"); if(a && document.activeElement && !a.contains(document.activeElement)) render(); });
-load(); render();
-try { localStorage.setItem(KEY+"-t","1"); localStorage.removeItem(KEY+"-t"); setDb("on","Entries save in this browser on this device."); }
-catch(e){ canWrite=false; render(); setDb("off","This browser is not keeping entries (private window or storage blocked)."); }
+loadCache(); render(); setDb("", "Connecting to the shared board…"); pull(false);
+setInterval(() => { if (!document.activeElement?.closest?.(".g")) pull(true); }, 20000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) pull(true); });
 </script>
 </body></html>
