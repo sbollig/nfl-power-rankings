@@ -33,7 +33,12 @@ h2{font-size:22px;font-weight:600;color:var(--navy);border-bottom:2px solid var(
 h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
 .games{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
 .g{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:grid;gap:10px;position:relative}
-.g.bron{border-color:var(--orange);box-shadow:inset 4px 0 0 var(--orange)}
+.g.bron{--card:#002244;--paper:#0d2f57;--ink:#ffffff;--muted:#c9d3e0;--line:#FB4F14;--navy:#FB4F14;--orange:#FB4F14;--orange-soft:#FB4F14;--field:#0d2f57;--good:#8fe3a6;--good-soft:#1c4a2c;--bad:#ffb3a7;--bad-soft:#5a2a24;--push:#ffd766;
+  background:#002244;color:#fff;border:2px solid #FB4F14;box-shadow:inset 6px 0 0 #FB4F14}
+.g.bron .chip.mack{color:#002244;background:#FB4F14;border-color:#FB4F14}
+.g.bron .lbl{color:#c9d3e0}
+.g.bron .score,.g.bron select{background:#0d2f57;color:#fff;border-color:#FB4F14}
+.g.bron.final{background:#002244}
 .g.final{background:var(--field)}
 .teams{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
 .team{font-family:"Barlow Condensed";font-size:26px;font-weight:700;line-height:1;color:var(--navy)}
