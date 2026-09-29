@@ -463,22 +463,23 @@ function tiles(){
 
 // ---- persistence: shared store (Google Apps Script web app, Mack 2026-09-29) + local cache ----
 const STORE = "https://script.google.com/macros/s/AKfycbwy0C0StLOn41vJQOeqBElzg1QyAu84evLOujqtUO_0bKWTL3v_WS-YBCjaUgnvhjat/exec";
-const WEEK = 4, KEY = "wk04-cache", BOARD_VER = "v8";
+const WEEK = 4, KEY = "wk04-cache", BOARD_VER = "v9";
 const PEOPLE = ["Todd","Ryota","Scott"];
 function loadCache(){ try{ Object.assign(state, JSON.parse(localStorage.getItem(KEY)||"{}")); }catch(e){} }
 function saveCache(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 function setDb(k,msg){ $("#dbdot").className="dot "+k; $("#dbmsg").textContent=msg; }
-const timers = {};
+const timers = {}, baseline = {};   // baseline[id] = server-known row, taken once per pending save (iOS fires input+change per select)
 function queueSave(id){
   const s = state[id] = state[id] || {};
-  const before = JSON.stringify(s);
+  if (!(id in baseline)) baseline[id] = JSON.stringify(s);
   s.as = $("#as-"+id).value.trim(); s.hs = $("#hs-"+id).value.trim();
   s.picks = {}; for (const p of PEOPLE) s.picks[p] = { su: $("#su-"+p+"-"+id).value, ats: $("#ats-"+p+"-"+id).value, ou: $("#ou-"+p+"-"+id).value };
   saveCache(); tiles();
-  clearTimeout(timers[id]); timers[id] = setTimeout(() => push(id, before), 500);
+  clearTimeout(timers[id]); timers[id] = setTimeout(() => push(id), 500);
 }
-async function push(id, before){
-  const s = state[id]; const prev = before ? JSON.parse(before) : {};
+async function push(id){
+  const s = state[id]; const before = baseline[id]; delete baseline[id];
+  const prev = before ? JSON.parse(before) : {};
   const calls = [];
   for (const p of PEOPLE){ const v = s.picks[p], o = (prev.picks||{})[p]||{}; if (v.su!==o.su || v.ats!==o.ats || v.ou!==o.ou) calls.push({week:WEEK, game:id, person:p, su:v.su, ats:v.ats, ou:v.ou}); }
   if (s.as !== (prev.as||"") || s.hs !== (prev.hs||"")) calls.push({week:WEEK, game:id, as:s.as, hs:s.hs});
@@ -488,7 +489,7 @@ async function push(id, before){
     ping("saved:" + id);
     setDb("on","Saved to the shared board at " + new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) + ". Everyone sees the same picks and scores. Board " + BOARD_VER + ".");
     await pull(false);
-  } catch(e){ ping("savefail:" + id + ":" + String(e).slice(0,30)); setDb("off","Could not reach the shared board; your entry is kept on this device and will show again here. Try later."); }
+  } catch(e){ if (!(id in baseline)) baseline[id] = before; ping("savefail:" + id + ":" + String(e).slice(0,30)); setDb("off","Could not reach the shared board; your entry is kept on this device and will show again here. Try later."); }
 }
 async function pull(quiet){
   try {
