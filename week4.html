@@ -22,6 +22,9 @@ h1{font-size:44px;font-weight:700;line-height:1;letter-spacing:.01em;color:var(-
 h1 span{color:var(--orange)}
 .sub{color:var(--muted);margin-top:6px;font-size:14px}
 .lbl{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.rec{border-top:2px solid var(--navy);border-bottom:1px solid var(--line);padding:10px 0}
+.recrow{display:grid;gap:4px;font-size:14px;margin-top:4px}
+.recrow b{font-family:"Barlow Condensed";font-size:17px;color:var(--orange);margin-right:6px}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
 .tile{background:var(--card);border:1px solid var(--line);padding:12px 14px;border-radius:6px}
 .tile .v{font-family:"Barlow Condensed";font-size:34px;font-weight:700;line-height:1;margin-top:4px;color:var(--navy)}
@@ -333,6 +336,15 @@ h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
     <h1>Week 4 <span>Board</span></h1>
     <div class="sub">Mack's line, the DraftKings market (via ESPN, fetched Sep 28 5:15 PM PT), and his pick for every game. Enter finals and your own pick as the games go; it saves in this browser.</div>
   </header>
+
+  <section class="rec">
+    <div class="lbl">Mack's record so far</div>
+    <div class="recrow">
+      <div><b>Week 2</b> 9-7 straight up · 6-10 against the spread · avg miss 13.5 pts (book 11.8)</div>
+      <div><b>Week 3</b> 9-6 straight up · 8-6-1 against the spread · avg miss 7.3 pts (book 7.3) · Eagles-Bears pending</div>
+      <div><b>Season</b> 18-13 straight up · 14-16-1 against the spread</div>
+    </div>
+  </section>
 
   <section class="tiles" id="tiles"></section>
   <div class="status"><span class="dot" id="dbdot"></span><span id="dbmsg">Checking storage…</span></div>
