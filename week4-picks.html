@@ -56,6 +56,8 @@ h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
 .you select:focus,.you input:focus{outline:2px solid var(--orange);outline-offset:1px}
 .note{grid-column:1/-1}
 .kick{font-size:12px;color:var(--muted)}
+.inj{font-size:12px;color:var(--muted);display:grid;gap:2px;line-height:1.35}
+.inj b{color:var(--ink);font-weight:600}
 .saved{position:absolute;top:10px;right:12px;font-size:11px;color:var(--good);opacity:0;transition:opacity .3s}
 .saved.show{opacity:1}
 .foot{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
@@ -78,6 +80,7 @@ h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
 
   <footer class="foot">
     <p><b>How to read a card.</b> Lines are home-side, book sign: a negative number means the home team is favored by that much. <b>Mack</b> is his line after this week's verified injury hits. <b>Edge</b> is his line minus the market; he leans against the spread only at 2 points or more. The win % is his straight-up confidence.</p>
+    <p><b>Key injuries</b> are the top three per team from the ESPN injury report (Out, IR, Doubtful, Questionable), fetched Sep 28 5:15 PM PT; backup quarterbacks omitted.</p>
     <p><b>QB notes applied.</b> Bears: Williams out, Bagent starts. Buccaneers: Mayfield out, rookie Jalon Daniels starts. Giants: Dart on IR, Winston starts. Commanders: Daniels doubtful, Mariota likely. Bills: Allen expected to play.</p>
     <p>Prepared by: Mack. Picks and finals stay in this browser only; the ratings update uses the official finals. <a href="week4.html">Solo board</a> · <a href="index.html">Rankings</a> · <a href="season.html">Season projection</a></p>
   </footer>
@@ -87,22 +90,22 @@ h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
 // Game data: from Ideas/NFL/Picks_Wk04.md + Week04_Intel.json (Mack, 2026-09-28).
 // line = Mack's line with injuries, mkt = market, both home-side book sign. p = Mack's SU win% for his pick.
 const GAMES = [
- {id:"g01",win:"Thursday night",kick:"Thu Oct 1 · 5:15 PM PT",away:"Steelers",home:"Browns",base:4.1,line:4.4,mkt:2.5,ou:38.5,su:"Steelers",p:63,ats:""},
- {id:"g02",win:"Sunday early (London)",kick:"Sun Oct 4 · 6:30 AM PT",away:"Colts",home:"Commanders",base:-2.1,line:1.9,mkt:3.5,ou:47.5,su:"Colts",p:56,ats:"",qb:true},
- {id:"g03",win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Patriots",home:"Bills",base:-7.7,line:-8.5,mkt:-7.0,ou:48.5,su:"Bills",p:74,ats:""},
- {id:"g04",win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Jets",home:"Bears",base:-9.3,line:-5.3,mkt:-3.0,ou:43.5,su:"Bears",p:65,ats:"Bears",qb:true},
- {id:"g05",win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Jaguars",home:"Bengals",base:-1.2,line:-0.5,mkt:-2.5,ou:51.5,su:"Bengals",p:52,ats:""},
- {id:"g06",win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Cardinals",home:"Giants",base:-3.0,line:1.5,mkt:1.5,ou:44.5,su:"Cardinals",p:54,ats:"",qb:true},
- {id:"g07",win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Rams",home:"Eagles",base:-1.2,line:-1.7,mkt:2.5,ou:45.5,su:"Eagles",p:55,ats:"Eagles"},
- {id:"g08",win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Packers",home:"Buccaneers",base:0.0,line:3.0,mkt:3.5,ou:39.5,su:"Packers",p:59,ats:"",qb:true},
- {id:"g09",win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Titans",home:"Ravens",base:-11.8,line:-10.8,mkt:-11.5,ou:43.5,su:"Ravens",p:79,ats:""},
- {id:"g10",win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Cowboys",home:"Texans",base:-1.6,line:-1.6,mkt:-2.5,ou:47.5,su:"Texans",p:55,ats:""},
- {id:"g11",win:"Sunday afternoon",kick:"Sun Oct 4 · 1:05 PM PT",away:"Dolphins",home:"Vikings",base:-10.1,line:-10.4,mkt:-10.5,ou:38.5,su:"Vikings",p:78,ats:""},
- {id:"g12",win:"Sunday afternoon",kick:"Sun Oct 4 · 1:25 PM PT",away:"Chiefs",home:"Raiders",base:4.0,line:4.1,mkt:4.5,ou:47.5,su:"Chiefs",p:62,ats:""},
- {id:"g13",win:"Sunday afternoon",kick:"Sun Oct 4 · 1:25 PM PT",away:"Broncos",home:"49ers",base:-1.3,line:0.2,mkt:-3.0,ou:46.5,su:"Broncos",p:51,ats:"Broncos",bron:true},
- {id:"g14",win:"Sunday afternoon",kick:"Sun Oct 4 · 1:25 PM PT",away:"Chargers",home:"Seahawks",base:-7.6,line:-7.6,mkt:-7.0,ou:43.5,su:"Seahawks",p:71,ats:""},
- {id:"g15",win:"Sunday night",kick:"Sun Oct 4 · 5:20 PM PT",away:"Lions",home:"Panthers",base:3.4,line:4.4,mkt:3.5,ou:50.5,su:"Lions",p:63,ats:""},
- {id:"g16",win:"Monday night",kick:"Mon Oct 5 · 5:15 PM PT",away:"Falcons",home:"Saints",base:-0.8,line:1.2,mkt:-2.5,ou:48.5,su:"Falcons",p:54,ats:"Falcons"},
+ {id:"g01",inj:{"away": ["Rico Dowdle (RB, Out)", "Gennings Dunker (G, IR)", "Jalen Ramsey (CB, Q)"], "home": ["Teven Jenkins (G, Out)", "Tyson Campbell (CB, Out)", "Grant Delpit (S, Q)"]},win:"Thursday night",kick:"Thu Oct 1 · 5:15 PM PT",away:"Steelers",home:"Browns",base:4.1,line:4.4,mkt:2.5,ou:38.5,su:"Steelers",p:63,ats:""},
+ {id:"g02",inj:{"away": ["Alec Pierce (WR, IR)", "Ashton Dulin (WR, Out)", "Micheal Clemons (DE, IR)"], "home": ["Chig Okonkwo (TE, Out)", "Leo Chenal (LB, Out)", "Frankie Luvu (LB, Out)"]},win:"Sunday early (London)",kick:"Sun Oct 4 · 6:30 AM PT",away:"Colts",home:"Commanders",base:-2.1,line:1.9,mkt:3.5,ou:47.5,su:"Colts",p:56,ats:"",qb:true},
+ {id:"g03",inj:{"away": ["Craig Woodson (S, Out)", "Eli Raridon (TE, Out)", "Dre'Mont Jones (DE, Out)"], "home": ["Ar'maj Reed-Adams (G, Out)", "T.J. Sanders (DT, Out)", "Jordan Hancock (CB, IR)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Patriots",home:"Bills",base:-7.7,line:-8.5,mkt:-7.0,ou:48.5,su:"Bills",p:74,ats:""},
+ {id:"g04",inj:{"away": ["Mason Taylor (TE, Out)", "Kiko Mauigoa (LB, Out)", "Adonai Mitchell (WR, Out)"], "home": ["Caleb Williams (QB, Out)", "Anthony Johnson Jr. (S, IR)", "Shemar Turner (DT, Out)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Jets",home:"Bears",base:-9.3,line:-5.3,mkt:-3.0,ou:43.5,su:"Bears",p:65,ats:"Bears",qb:true},
+ {id:"g05",inj:{"away": ["Albert Regis (DT, Out)", "B.J. Green II (DE, IR)"], "home": ["Colbie Young (WR, Out)", "B.J. Hill (DT, Out)", "Andrei Iosivas (WR, IR)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Jaguars",home:"Bengals",base:-1.2,line:-0.5,mkt:-2.5,ou:51.5,su:"Bengals",p:52,ats:""},
+ {id:"g06",inj:{"away": ["Dadrion Taylor-Demerson (S, Out)", "Will Johnson (CB, IR)"], "home": ["Jaxson Dart (QB, Out)", "Brian Burns (LB, Out)", "Tyler Nubin (S, Out)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Cardinals",home:"Giants",base:-3.0,line:1.5,mkt:1.5,ou:44.5,su:"Cardinals",p:54,ats:"",qb:true},
+ {id:"g07",inj:{"away": ["Puka Nacua (WR, Out)", "Kamren Kinchens (S, Out)", "Myles Garrett (DE, IR)"], "home": ["Fred Johnson (OT, Out)", "Dallas Goedert (TE, Out)", "Hollywood Brown (WR, Out)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Rams",home:"Eagles",base:-1.2,line:-1.7,mkt:2.5,ou:45.5,su:"Eagles",p:55,ats:"Eagles"},
+ {id:"g08",inj:{"away": ["Jayden Reed (WR, Out)", "Zach Bako-Bewele (OT, Out)", "Aaron Banks (G, Out)"], "home": ["Baker Mayfield (QB, Out)", "Jalen McMillan (WR, Out)", "Josiah Trotter (LB, Out)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Packers",home:"Buccaneers",base:0.0,line:3.0,mkt:3.5,ou:39.5,su:"Packers",p:59,ats:"",qb:true},
+ {id:"g09",inj:{"away": ["Fernando Carmona (G, D)", "Jackson Slater (G, Q)"], "home": ["Ethan Pocic (C, Out)", "Jovaughn Gwyn (G, Out)", "Ronnie Stanley (OT, Out)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Titans",home:"Ravens",base:-11.8,line:-10.8,mkt:-11.5,ou:43.5,su:"Ravens",p:79,ats:""},
+ {id:"g10",inj:{"away": ["Jalen Thompson (S, Out)", "DeMarvion Overshown (LB, Out)", "Cobie Durant (CB, Out)"], "home": ["Ed Ingram (G, Out)", "Jadeveon Clowney (DE, Out)", "Nico Collins (WR, Out)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Cowboys",home:"Texans",base:-1.6,line:-1.6,mkt:-2.5,ou:47.5,su:"Texans",p:55,ats:""},
+ {id:"g11",inj:{"away": ["De'Von Achane (RB, IR)", "Caleb Douglas (WR, Out)", "Jaylen Wright (RB, Out)"], "home": ["Brett Thorson (P, Out)", "Josh Oliver (TE, Out)", "Charles Demmings (CB, Out)"]},win:"Sunday afternoon",kick:"Sun Oct 4 · 1:05 PM PT",away:"Dolphins",home:"Vikings",base:-10.1,line:-10.4,mkt:-10.5,ou:38.5,su:"Vikings",p:78,ats:""},
+ {id:"g12",inj:{"away": ["Chamarri Conner (S, Out)", "Josh Simmons (OT, Out)"], "home": ["Jack Bech (WR, Out)", "Treydan Stukes (S, Out)"]},win:"Sunday afternoon",kick:"Sun Oct 4 · 1:25 PM PT",away:"Chiefs",home:"Raiders",base:4.0,line:4.1,mkt:4.5,ou:47.5,su:"Chiefs",p:62,ats:""},
+ {id:"g13",inj:{"away": ["Marvin Mims Jr. (WR, Out)", "Jonah Coleman (RB, IR)"], "home": ["Nick Bosa (DE, Out)", "James Thompson Jr. (DT, Out)", "Romello Height (DE, Out)"]},win:"Sunday afternoon",kick:"Sun Oct 4 · 1:25 PM PT",away:"Broncos",home:"49ers",base:-1.3,line:0.2,mkt:-3.0,ou:46.5,su:"Broncos",p:51,ats:"Broncos",bron:true},
+ {id:"g14",inj:{"away": ["Brenen Thompson (WR, Out)", "Dalvin Tomlinson (DT, Out)", "Charlie Kolar (TE, Out)"], "home": ["Julian Love (S, Out)", "Ty Okada (S, Out)", "Brandon Pili (DT, Out)"]},win:"Sunday afternoon",kick:"Sun Oct 4 · 1:25 PM PT",away:"Chargers",home:"Seahawks",base:-7.6,line:-7.6,mkt:-7.0,ou:43.5,su:"Seahawks",p:71,ats:""},
+ {id:"g15",inj:{"away": ["Ben Bartch (G, Out)", "Thomas Harper (S, IR)", "Avonte Maddox (CB, IR)"], "home": ["Devin Lloyd (LB, Out)", "Nick Scott (S, Out)", "Xavier Legette (WR, Out)"]},win:"Sunday night",kick:"Sun Oct 4 · 5:20 PM PT",away:"Lions",home:"Panthers",base:3.4,line:4.4,mkt:3.5,ou:50.5,su:"Lions",p:63,ats:""},
+ {id:"g16",inj:{"away": ["Samson Ebukam (DE, Out)"], "home": ["Travis Etienne Jr. (RB, Out)", "Christen Miller (DT, Out)", "Barion Brown (WR, Out)"]},win:"Monday night",kick:"Mon Oct 5 · 5:15 PM PT",away:"Falcons",home:"Saints",base:-0.8,line:1.2,mkt:-2.5,ou:48.5,su:"Falcons",p:54,ats:"Falcons"},
 ];
 const state = {};   // id -> {as, hs, pick, note}
 let db = null, canWrite = true;
@@ -154,6 +157,9 @@ function card(g){
       <div><span class="lbl">Edge</span><b>${fm(g.line-g.mkt)}</b></div>
       <div><span class="lbl">O/U</span><b>${g.ou}</b></div>
     </div>
+    <div class="inj"><span class="lbl">Key injuries</span>
+      <div><b>${g.away}</b> ${g.inj.away.length?g.inj.away.join(" · "):"none listed"}</div>
+      <div><b>${g.home}</b> ${g.inj.home.length?g.inj.home.join(" · "):"none listed"}</div></div>
     <div class="pick">${chip(`Mack: ${g.su} ${g.p}%`, "mack")}${g.ats?chip(`ATS lean ${g.ats}`):""}${verdict}</div>
     <div class="you">
       ${PEOPLE.map(p => `<label class="lbl" for="pk-${p}-${g.id}">${p}</label>
