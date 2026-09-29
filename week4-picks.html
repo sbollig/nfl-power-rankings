@@ -461,6 +461,7 @@ function tiles(){
 // ---- persistence: shared store (Google Apps Script web app, Mack 2026-09-29) + local cache ----
 const STORE = "https://script.google.com/macros/s/AKfycbwy0C0StLOn41vJQOeqBElzg1QyAu84evLOujqtUO_0bKWTL3v_WS-YBCjaUgnvhjat/exec";
 const WEEK = 4, KEY = "wk04-cache";
+const PEOPLE = ["Todd","Ryota","Scott"];
 function loadCache(){ try{ Object.assign(state, JSON.parse(localStorage.getItem(KEY)||"{}")); }catch(e){} }
 function saveCache(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 function setDb(k,msg){ $("#dbdot").className="dot "+k; $("#dbmsg").textContent=msg; }
