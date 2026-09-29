@@ -302,7 +302,9 @@ h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
 .g.final{background:var(--field)}
 .teams{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
 .team{font-family:"Barlow Condensed";font-size:26px;font-weight:700;line-height:1;color:var(--navy)}
-.team.away{text-align:left}.team.home{text-align:right}
+.team.away{text-align:left}.team.home{text-align:right;justify-content:flex-end}
+.team{display:flex;align-items:center;gap:6px}
+.logo{width:34px;height:34px;object-fit:contain;flex:none;filter:drop-shadow(0 0 1px rgba(255,255,255,.6))}
 .at{font-size:12px;color:var(--muted);text-align:center}
 .score{width:100%;font:inherit;font-family:"Barlow Condensed";font-size:30px;font-weight:700;text-align:center;border:1px solid var(--line);border-radius:4px;background:var(--paper);color:var(--ink);padding:4px 2px;min-width:0}
 .score:focus{outline:2px solid var(--orange);outline-offset:1px}
@@ -380,6 +382,7 @@ const GAMES = [
  {id:"g15",inj:{"away": ["Ben Bartch (G, Out)", "Thomas Harper (S, IR)", "Avonte Maddox (CB, IR)"], "home": ["Devin Lloyd (LB, Out)", "Nick Scott (S, Out)", "Xavier Legette (WR, Out)"]},win:"Sunday night",kick:"Sun Oct 4 · 5:20 PM PT",away:"Lions",home:"Panthers",base:3.4,line:4.4,mkt:3.5,ou:50.5,su:"Lions",p:63,ats:""},
  {id:"g16",inj:{"away": ["Samson Ebukam (DE, Out)"], "home": ["Travis Etienne Jr. (RB, Out)", "Christen Miller (DT, Out)", "Barion Brown (WR, Out)"]},win:"Monday night",kick:"Mon Oct 5 · 5:15 PM PT",away:"Falcons",home:"Saints",base:-0.8,line:1.2,mkt:-2.5,ou:48.5,su:"Falcons",p:54,ats:"Falcons"},
 ];
+const LOGO={"Cardinals":"https://a.espncdn.com/i/teamlogos/nfl/500/ari.png","Falcons":"https://a.espncdn.com/i/teamlogos/nfl/500/atl.png","Ravens":"https://a.espncdn.com/i/teamlogos/nfl/500/bal.png","Bills":"https://a.espncdn.com/i/teamlogos/nfl/500/buf.png","Panthers":"https://a.espncdn.com/i/teamlogos/nfl/500/car.png","Bears":"https://a.espncdn.com/i/teamlogos/nfl/500/chi.png","Bengals":"https://a.espncdn.com/i/teamlogos/nfl/500/cin.png","Browns":"https://a.espncdn.com/i/teamlogos/nfl/500/cle.png","Cowboys":"https://a.espncdn.com/i/teamlogos/nfl/500/dal.png","Broncos":"https://a.espncdn.com/i/teamlogos/nfl/500/den.png","Lions":"https://a.espncdn.com/i/teamlogos/nfl/500/det.png","Packers":"https://a.espncdn.com/i/teamlogos/nfl/500/gb.png","Texans":"https://a.espncdn.com/i/teamlogos/nfl/500/hou.png","Colts":"https://a.espncdn.com/i/teamlogos/nfl/500/ind.png","Jaguars":"https://a.espncdn.com/i/teamlogos/nfl/500/jax.png","Chiefs":"https://a.espncdn.com/i/teamlogos/nfl/500/kc.png","Raiders":"https://a.espncdn.com/i/teamlogos/nfl/500/lv.png","Chargers":"https://a.espncdn.com/i/teamlogos/nfl/500/lac.png","Rams":"https://a.espncdn.com/i/teamlogos/nfl/500/lar.png","Dolphins":"https://a.espncdn.com/i/teamlogos/nfl/500/mia.png","Vikings":"https://a.espncdn.com/i/teamlogos/nfl/500/min.png","Patriots":"https://a.espncdn.com/i/teamlogos/nfl/500/ne.png","Saints":"https://a.espncdn.com/i/teamlogos/nfl/500/no.png","Giants":"https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png","Jets":"https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png","Eagles":"https://a.espncdn.com/i/teamlogos/nfl/500/phi.png","Steelers":"https://a.espncdn.com/i/teamlogos/nfl/500/pit.png","49ers":"https://a.espncdn.com/i/teamlogos/nfl/500/sf.png","Seahawks":"https://a.espncdn.com/i/teamlogos/nfl/500/sea.png","Buccaneers":"https://a.espncdn.com/i/teamlogos/nfl/500/tb.png","Titans":"https://a.espncdn.com/i/teamlogos/nfl/500/ten.png","Commanders":"https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png"};
 const state = {};   // id -> {as, hs, pick, note}
 let db = null, canWrite = true;
 const $ = (s, r=document) => r.querySelector(s);
@@ -423,7 +426,7 @@ function card(g){
     <span class="saved" id="sv-${g.id}">saved</span>
     <div class="kick">${g.kick}${g.qb?" · QB change":""}</div>
     <div class="teams">
-      <div class="team away">${g.away}</div><div class="at">at</div><div class="team home">${g.home}</div>
+      <div class="team away"><img class="logo" src="${LOGO[g.away]}" alt="" loading="lazy">${g.away}</div><div class="at">at</div><div class="team home">${g.home}<img class="logo" src="${LOGO[g.home]}" alt="" loading="lazy"></div>
       <input class="score" id="as-${g.id}" inputmode="numeric" pattern="[0-9]*" placeholder="–" value="${s.as ?? ""}" aria-label="${g.away} score" ${canWrite?"":"disabled"}>
       <div></div>
       <input class="score" id="hs-${g.id}" inputmode="numeric" pattern="[0-9]*" placeholder="–" value="${s.hs ?? ""}" aria-label="${g.home} score" ${canWrite?"":"disabled"}>
