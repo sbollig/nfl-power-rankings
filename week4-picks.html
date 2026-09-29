@@ -24,8 +24,8 @@ h1 span{color:var(--orange)}
 .lbl{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
 .tile{background:var(--card);border:1px solid var(--line);padding:12px 14px;border-radius:6px}
-.tile .v{font-family:"Barlow Condensed";font-size:34px;font-weight:700;line-height:1;margin-top:4px;color:var(--navy)}
-.tile .v small{font-size:16px;color:var(--muted);font-weight:500;margin-left:4px}
+.tile .v{font-family:"Barlow Condensed";font-size:30px;font-weight:700;line-height:1;margin-top:4px;color:var(--navy)}
+.tile .v small{font-size:13px;display:block;margin-left:0;margin-top:2px;color:var(--muted);font-weight:500;margin-left:4px}
 .status{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--muted);display:inline-block}
 .dot.on{background:var(--good)}.dot.off{background:var(--bad)}
@@ -50,11 +50,9 @@ h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
 .chip.ok{background:var(--good-soft);border-color:var(--good);color:var(--good)}
 .chip.no{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
 .chip.push{border-color:var(--push);color:var(--push)}
-.you{display:grid;grid-template-columns:auto 1fr auto 1fr auto 1fr;gap:6px 8px;align-items:center;font-size:13px}
-@media (max-width:520px){.you{grid-template-columns:auto 1fr}}
+.you{display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:6px 8px;align-items:center;font-size:13px}
 .you select,.you input[type=text]{font:inherit;padding:5px 7px;border:1px solid var(--line);border-radius:4px;background:var(--paper);color:var(--ink);min-width:0;width:100%}
 .you select:focus,.you input:focus{outline:2px solid var(--orange);outline-offset:1px}
-.note{grid-column:1/-1}
 .kick{font-size:12px;color:var(--muted)}
 .inj{font-size:12px;color:var(--muted);display:grid;gap:2px;line-height:1.35}
 .inj b{color:var(--ink);font-weight:600}
@@ -82,7 +80,7 @@ h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
     <p><b>How to read a card.</b> Lines are home-side, book sign: a negative number means the home team is favored by that much. <b>Mack</b> is his line after this week's verified injury hits. <b>Edge</b> is his line minus the market; he leans against the spread only at 2 points or more. The win % is his straight-up confidence.</p>
     <p><b>Key injuries</b> are the top three per team from the ESPN injury report (Out, IR, Doubtful, Questionable), fetched Sep 28 5:15 PM PT; backup quarterbacks omitted.</p>
     <p><b>QB notes applied.</b> Bears: Williams out, Bagent starts. Buccaneers: Mayfield out, rookie Jalon Daniels starts. Giants: Dart on IR, Winston starts. Commanders: Daniels doubtful, Mariota likely. Bills: Allen expected to play.</p>
-    <p>Prepared by: Mack. Picks and finals stay in this browser only; the ratings update uses the official finals. <a href="week4.html">Solo board</a> · <a href="index.html">Rankings</a> · <a href="season.html">Season projection</a></p>
+    <p>Prepared by: Mack. Picks and finals stay in this browser only (winner, spread at the listed market, over/under at the listed total); the ratings update uses the official finals. <a href="week4.html">Solo board</a> · <a href="index.html">Rankings</a> · <a href="season.html">Season projection</a></p>
   </footer>
 </div>
 
@@ -122,7 +120,11 @@ function grade(g, s){
   let ats = null;
   if (g.ats){ const cover = margin + g.mkt;    // home covers if margin + mkt > 0
     ats = cover === 0 ? "push" : ((cover > 0) === (g.ats === g.home) ? "ok" : "no"); }
-  const ppl = {}; for (const p of PEOPLE){ const pk = (s.picks||{})[p]; ppl[p] = pk ? (winner === "Tie" ? "push" : (winner === pk ? "ok" : "no")) : null; }
+  const cover = margin + g.mkt, ppl = {};
+  for (const p of PEOPLE){ const pk = (s.picks||{})[p] || {};
+    ppl[p] = { su: pk.su ? (winner==="Tie" ? "push" : (winner===pk.su ? "ok":"no")) : null,
+               ats: pk.ats ? (cover===0 ? "push" : ((cover>0)===(pk.ats===g.home) ? "ok":"no")) : null,
+               ou: pk.ou ? (as+hs===g.ou ? "push" : (((as+hs)>g.ou)===(pk.ou==="Over") ? "ok":"no")) : null }; }
   return {margin, winner, su, ats, ppl, total: as + hs};
 }
 
@@ -139,7 +141,7 @@ function card(g){
   const verdict = r ? [
     chip(`Mack SU ${r.su==="ok"?"✓":r.su==="no"?"✗":"push"}`, r.su),
     r.ats ? chip(`ATS ${r.ats==="ok"?"✓":r.ats==="no"?"✗":"push"}`, r.ats) : "",
-    ...PEOPLE.map(p => r.ppl[p] ? chip(`${p} ${r.ppl[p]==="ok"?"✓":r.ppl[p]==="no"?"✗":"push"}`, r.ppl[p]) : ""),
+    ...PEOPLE.map(p => ["su","ats","ou"].map(k => r.ppl[p][k] ? chip(`${p} ${k.toUpperCase()} ${r.ppl[p][k]==="ok"?"✓":r.ppl[p][k]==="no"?"✗":"push"}`, r.ppl[p][k]) : "").join("")),
     chip(`Total ${r.total} ${r.total>g.ou?"over":r.total<g.ou?"under":"push"}`, r.total===g.ou?"push":"")
   ].join("") : "";
   return `<article class="g ${g.bron?"bron":""} ${r?"final":""}" data-id="${g.id}">
@@ -162,21 +164,24 @@ function card(g){
       <div><b>${g.home}</b> ${g.inj.home.length?g.inj.home.join(" · "):"none listed"}</div></div>
     <div class="pick">${chip(`Mack: ${g.su} ${g.p}%`, "mack")}${g.ats?chip(`ATS lean ${g.ats}`):""}${verdict}</div>
     <div class="you">
-      ${PEOPLE.map(p => `<label class="lbl" for="pk-${p}-${g.id}">${p}</label>
-      <select id="pk-${p}-${g.id}" data-person="${p}" ${canWrite?"":"disabled"}><option value="">—</option>
-        <option ${(s.picks||{})[p]===g.away?"selected":""}>${g.away}</option><option ${(s.picks||{})[p]===g.home?"selected":""}>${g.home}</option></select>`).join("")}
-      <input class="note" type="text" id="nt-${g.id}" placeholder="Note (what you saw, who was hurt…)" value="${(s.note||"").replace(/"/g,"&quot;")}" ${canWrite?"":"disabled"}>
+      <span class="lbl"></span><span class="lbl">Winner</span><span class="lbl">Spread</span><span class="lbl">Total ${g.ou}</span>
+      ${PEOPLE.map(p => { const pk=(s.picks||{})[p]||{}; const sel=(v,x)=>v===x?"selected":"";
+        const sp = g.mkt<0 ? [[g.away, `${g.away} +${-g.mkt}`],[g.home, `${g.home} ${g.mkt}`]] : [[g.away, `${g.away} ${g.mkt===0?"PK":"-"+g.mkt}`],[g.home, `${g.home} ${g.mkt===0?"PK":"+"+g.mkt}`]];
+        return `<label class="lbl">${p}</label>
+        <select id="su-${p}-${g.id}" aria-label="${p} winner" ${canWrite?"":"disabled"}><option value="">—</option><option ${sel(pk.su,g.away)}>${g.away}</option><option ${sel(pk.su,g.home)}>${g.home}</option></select>
+        <select id="ats-${p}-${g.id}" aria-label="${p} spread" ${canWrite?"":"disabled"}><option value="">—</option>${sp.map(([v,l])=>`<option value="${v}" ${sel(pk.ats,v)}>${l}</option>`).join("")}</select>
+        <select id="ou-${p}-${g.id}" aria-label="${p} total" ${canWrite?"":"disabled"}><option value="">—</option><option ${sel(pk.ou,"Over")}>Over</option><option ${sel(pk.ou,"Under")}>Under</option></select>`; }).join("")}
     </div>
   </article>`;
 }
 function tiles(){
-  let finals=0, su=[0,0], ats=[0,0]; const rec={}; for(const p of PEOPLE) rec[p]=[0,0];
+  let finals=0, su=[0,0], ats=[0,0]; const rec={}; for(const p of PEOPLE) rec[p]={su:[0,0],ats:[0,0],ou:[0,0]};
   for (const g of GAMES){ const r = grade(g, state[g.id]||{}); if(!r) continue; finals++;
     if(r.su!=="push"){su[1]++; if(r.su==="ok")su[0]++;}
     if(r.ats&&r.ats!=="push"){ats[1]++; if(r.ats==="ok")ats[0]++;}
-    for(const p of PEOPLE){ const v=r.ppl[p]; if(v&&v!=="push"){rec[p][1]++; if(v==="ok")rec[p][0]++;} } }
+    for(const p of PEOPLE) for(const k of ["su","ats","ou"]){ const v=r.ppl[p][k]; if(v&&v!=="push"){rec[p][k][1]++; if(v==="ok")rec[p][k][0]++;} } }
   const t = (l,v,s) => `<div class="tile"><div class="lbl">${l}</div><div class="v">${v}${s?`<small>${s}</small>`:""}</div></div>`;
-  $("#tiles").innerHTML = t("Finals in", finals, "/ 16") + t("Mack straight up", `${su[0]}`, `/ ${su[1]}`) + t("Mack ATS leans", `${ats[0]}`, `/ ${ats[1]}`) + PEOPLE.map(p => t(p, `${rec[p][0]}`, `/ ${rec[p][1]}`)).join("");
+  $("#tiles").innerHTML = t("Finals in", finals, "/ 16") + t("Mack straight up", `${su[0]}`, `/ ${su[1]}`) + t("Mack ATS leans", `${ats[0]}`, `/ ${ats[1]}`) + PEOPLE.map(p => t(p, `${rec[p].su[0]}-${rec[p].su[1]-rec[p].su[0]}`, `SU · ATS ${rec[p].ats[0]}-${rec[p].ats[1]-rec[p].ats[0]} · O/U ${rec[p].ou[0]}-${rec[p].ou[1]-rec[p].ou[0]}`)).join("");
 }
 
 // ---- persistence: this browser only (localStorage) ----
@@ -187,7 +192,7 @@ const timers = {};
 function queueSave(id){
   const s = state[id] = state[id] || {};
   s.as = $("#as-"+id).value.trim(); s.hs = $("#hs-"+id).value.trim();
-  s.picks = {}; for (const p of PEOPLE) s.picks[p] = $("#pk-"+p+"-"+id).value; s.note = $("#nt-"+id).value;
+  s.picks = {}; for (const p of PEOPLE) s.picks[p] = { su: $("#su-"+p+"-"+id).value, ats: $("#ats-"+p+"-"+id).value, ou: $("#ou-"+p+"-"+id).value };
   clearTimeout(timers[id]); timers[id] = setTimeout(() => save(id), 400);
   tiles();
 }
