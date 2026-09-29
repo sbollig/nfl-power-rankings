@@ -334,7 +334,7 @@ h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
 
 <div class="wrap">
   <header>
-    <div class="lbl">NFL 2026 · Week 4 · ratings after Week 3</div>
+    <div class="lbl">NFL 2026 · Week 4 · ratings after Week 3 (all 16 final)</div>
     <h1>Week 4 <span>Board</span></h1>
     <div class="sub">Mack's line, the DraftKings market (via ESPN, fetched Sep 28 5:15 PM PT), and his pick for every game. Enter Todd's, Ryota's and Scott's winners, then the finals as the games go; it saves in this browser.</div>
   </header>
@@ -343,8 +343,8 @@ h2 small{font-family:Barlow;font-size:13px;color:var(--muted);font-weight:500}
     <div class="lbl">Mack's record so far</div>
     <div class="recrow">
       <div><b>Week 2</b> 9-7 straight up · 6-10 against the spread · avg miss 13.5 pts (book 11.8)</div>
-      <div><b>Week 3</b> 9-6 straight up · 8-6-1 against the spread · avg miss 7.3 pts (book 7.3) · Eagles-Bears pending</div>
-      <div><b>Season</b> 18-13 straight up · 14-16-1 against the spread</div>
+      <div><b>Week 3</b> 10-6 straight up · 9-6-1 against the spread · avg miss 8.0 pts (book 8.3)</div>
+      <div><b>Season</b> 19-13 straight up · 15-16-1 against the spread</div>
     </div>
   </section>
 
@@ -368,10 +368,10 @@ const GAMES = [
  {id:"g01",inj:{"away": ["Jalen Ramsey (CB, Q) → Brandin Echols (CB, 6 yr)"], "home": ["Teven Jenkins (G, Out) → Austin Barber (OT, rookie)", "Tyson Campbell (CB, Out) → Mekhi Blackmon (CB, None yr)", "Grant Delpit (S, Q) → Emmanuel McNeil-Warren (S, rookie)"]},win:"Thursday night",kick:"Thu Oct 1 · 5:15 PM PT",away:"Steelers",home:"Browns",base:4.1,line:4.4,mkt:2.5,ou:38.5,su:"Steelers",p:63,ats:""},
  {id:"g02",inj:{"away": ["Alec Pierce (WR, IR) → depth piece", "Ashton Dulin (WR, Out) → depth piece", "Micheal Clemons (DE, IR) → depth piece"], "home": ["Chig Okonkwo (TE, Out) → Ben Sinnott (TE, 3 yr)", "Frankie Luvu (LB, Out) → Kain Medrano (LB, 2 yr)", "Nick Cross (S, Out) → Tyler Owens (S, 3 yr)"]},win:"Sunday early (London)",kick:"Sun Oct 4 · 6:30 AM PT",away:"Colts",home:"Commanders",base:-2.1,line:1.9,mkt:3.5,ou:47.5,su:"Colts",p:56,ats:"",qb:true},
  {id:"g03",inj:{"away": ["Craig Woodson (S, Out) → Jaylen Reed (S, 2 yr)", "Dre'Mont Jones (DE, Out) → Gabe Jacas (LB, rookie)", "Greg Van Roten (G, Q) → Walter Rouse (OL, 3 yr)"], "home": ["T.J. Sanders (DT, Out) → Landon Jackson (DE, 2 yr)", "Christian Benford (CB, Q) → Davison Igbinosun (CB, rookie)", "Josh Allen (QB, Q) → Kyle Allen (QB, 8 yr)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Patriots",home:"Bills",base:-7.7,line:-8.5,mkt:-7.0,ou:48.5,su:"Bills",p:74,ats:""},
- {id:"g04",inj:{"away": ["Kiko Mauigoa (LB, Out) → Trevin Wallace (LB, 3 yr)", "Minkah Fitzpatrick (S, Out) → Malachi Moore (S, 2 yr)", "Breece Hall (RB, Q) → Braelon Allen (RB, 3 yr)"], "home": ["Caleb Williams (QB, Out) → Tyson Bagent (QB, 4 yr)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Jets",home:"Bears",base:-9.3,line:-5.3,mkt:-3.0,ou:43.5,su:"Bears",p:65,ats:"Bears",qb:true},
+ {id:"g04",inj:{"away": ["Kiko Mauigoa (LB, Out) → Trevin Wallace (LB, 3 yr)", "Minkah Fitzpatrick (S, Out) → Malachi Moore (S, 2 yr)", "Breece Hall (RB, Q) → Braelon Allen (RB, 3 yr)"], "home": ["Caleb Williams (QB, Out) → Tyson Bagent (QB, 4 yr)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Jets",home:"Bears",base:-11.2,line:-7.2,mkt:-3.0,ou:43.5,su:"Bears",p:70,ats:"Bears",qb:true},
  {id:"g05",inj:{"away": ["Albert Regis (DT, Out) → depth piece", "B.J. Green II (DE, IR) → depth piece"], "home": ["Jalen Davis (CB, Q) → Josh Newton (CB, 3 yr)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Jaguars",home:"Bengals",base:-1.2,line:-0.5,mkt:-2.5,ou:51.5,su:"Bengals",p:52,ats:""},
  {id:"g06",inj:{"away": ["Dadrion Taylor-Demerson (S, Out) → depth piece", "Will Johnson (CB, IR) → depth piece"], "home": ["Tyler Nubin (S, Out) → Ar'Darius Washington (S, 5 yr)", "Deonte Banks (CB, Out) → Colton Hood (CB, rookie)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Cardinals",home:"Giants",base:-3.0,line:1.5,mkt:1.5,ou:44.5,su:"Cardinals",p:54,ats:"",qb:true},
- {id:"g07",inj:{"away": ["Puka Nacua (WR, Out) → Konata Mumpfield (WR, 2 yr)", "Kamren Kinchens (S, Out) → Tanner Ingle (S, 1 yr)", "Jaylen Watson (CB, D) → no healthy backup listed"], "home": ["Fred Johnson (OT, Out) → depth piece", "Dallas Goedert (TE, Out) → Zach Ertz (TE, 14 yr)", "Hollywood Brown (WR, Out) → depth piece"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Rams",home:"Eagles",base:-1.2,line:-1.7,mkt:2.5,ou:45.5,su:"Eagles",p:55,ats:"Eagles"},
+ {id:"g07",inj:{"away": ["Puka Nacua (WR, Out) → Konata Mumpfield (WR, 2 yr)", "Kamren Kinchens (S, Out) → Tanner Ingle (S, 1 yr)", "Jaylen Watson (CB, D) → no healthy backup listed"], "home": ["Fred Johnson (OT, Out) → depth piece", "Dallas Goedert (TE, Out) → Zach Ertz (TE, 14 yr)", "Hollywood Brown (WR, Out) → depth piece"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Rams",home:"Eagles",base:0.7,line:0.2,mkt:2.5,ou:45.5,su:"Rams",p:51,ats:"Eagles"},
  {id:"g08",inj:{"away": ["Aaron Banks (G, Out) → Laken Tomlinson (G, 11 yr)", "Jacob Monk (C, Q) → Donovan Jennings (G, 2 yr)", "Edgerrin Cooper (LB, Q) → Isaiah McDuffie (LB, 6 yr)"], "home": ["Baker Mayfield (QB, Out) → Jalon Daniels (QB, rookie)", "Josiah Trotter (LB, Out) → SirVocea Dennis (LB, 4 yr)", "Rueben Bain Jr. (LB, Out) → Al-Quadin Muhammad (LB, 9 yr)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Packers",home:"Buccaneers",base:0.0,line:3.0,mkt:3.5,ou:39.5,su:"Packers",p:59,ats:"",qb:true},
  {id:"g09",inj:{"away": ["Fernando Carmona (G, D) → Jackson Slater (G, 2 yr)", "Jackson Slater (G, Q) → depth piece"], "home": ["Ethan Pocic (C, Out) → depth piece", "Jovaughn Gwyn (G, Out) → depth piece", "Ronnie Stanley (OT, Out) → Carson Vinson (OT, 2 yr)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Titans",home:"Ravens",base:-11.8,line:-10.8,mkt:-11.5,ou:43.5,su:"Ravens",p:79,ats:""},
  {id:"g10",inj:{"away": ["DeMarvion Overshown (LB, Out) → Jaishawn Barham (LB, rookie)", "Cobie Durant (CB, Out) → Shavon Revel Jr. (CB, 2 yr)", "Malik Hooker (S, Out) → no healthy backup listed"], "home": ["Nico Collins (WR, Out) → Jaylin Noel (WR, 2 yr)"]},win:"Sunday 10 AM",kick:"Sun Oct 4 · 10:00 AM PT",away:"Cowboys",home:"Texans",base:-1.6,line:-1.6,mkt:-2.5,ou:47.5,su:"Texans",p:55,ats:""},
