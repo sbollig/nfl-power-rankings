@@ -463,7 +463,7 @@ function tiles(){
 
 // ---- persistence: shared store (Google Apps Script web app, Mack 2026-09-29) + local cache ----
 const STORE = "https://script.google.com/macros/s/AKfycbwy0C0StLOn41vJQOeqBElzg1QyAu84evLOujqtUO_0bKWTL3v_WS-YBCjaUgnvhjat/exec";
-const WEEK = 4, KEY = "wk04-cache", BOARD_VER = "v7";
+const WEEK = 4, KEY = "wk04-cache", BOARD_VER = "v8";
 const PEOPLE = ["Todd","Ryota","Scott"];
 function loadCache(){ try{ Object.assign(state, JSON.parse(localStorage.getItem(KEY)||"{}")); }catch(e){} }
 function saveCache(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
@@ -485,9 +485,10 @@ async function push(id, before){
   try {
     for (const body of calls){ const q = new URLSearchParams(body).toString(); const r = await fetch(STORE + "?" + q, {cache:"no-store"}); const j = await r.json(); if (!j.ok) throw new Error(j.error||"store refused"); }
     const el=$("#sv-"+id); el.classList.add("show"); setTimeout(()=>el.classList.remove("show"),1200);
+    ping("saved:" + id);
     setDb("on","Saved to the shared board at " + new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) + ". Everyone sees the same picks and scores. Board " + BOARD_VER + ".");
     await pull(false);
-  } catch(e){ setDb("off","Could not reach the shared board; your entry is kept on this device and will show again here. Try later."); }
+  } catch(e){ ping("savefail:" + id + ":" + String(e).slice(0,30)); setDb("off","Could not reach the shared board; your entry is kept on this device and will show again here. Try later."); }
 }
 async function pull(quiet){
   try {
@@ -508,6 +509,10 @@ document.addEventListener("input", e => { const a = e.target.closest?.(".g"); if
 document.addEventListener("change", e => { const a = e.target.closest?.(".g"); if(a) queueSave(a.dataset.id); });
 document.addEventListener("focusout", e => { const a = e.target.closest?.(".g"); if(a && document.activeElement && !a.contains(document.activeElement)) render(); });
 loadCache(); render(); setDb("", "Connecting to the shared board…"); pull(false);
+// Tell the store which version/browser loaded (diagnostic), and self-refresh if a newer board is published.
+function ping(ev){ try{ fetch(STORE + "?ping=1&ver=" + BOARD_VER + "&ev=" + encodeURIComponent(ev) + "&ua=" + encodeURIComponent(navigator.userAgent.slice(0,160)), {cache:"no-store"}).catch(()=>{}); }catch(e){} }
+ping("load");
+(async () => { try { const r = await fetch("version.txt?t=" + Date.now(), {cache:"no-store"}); const v = (await r.text()).trim(); if (v && v !== BOARD_VER && !location.search.includes("v=" + v)) location.replace(location.pathname + "?v=" + v); } catch(e){} })();
 setInterval(() => { if (!document.activeElement?.closest?.(".g")) pull(true); }, 20000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) pull(true); });
 </script>
