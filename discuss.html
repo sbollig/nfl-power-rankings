@@ -82,7 +82,7 @@ footer a{color:var(--orange)}
 </div>
 <script>
 const STORE = "https://script.google.com/macros/s/AKfycbwy0C0StLOn41vJQOeqBElzg1QyAu84evLOujqtUO_0bKWTL3v_WS-YBCjaUgnvhjat/exec";
-const BOARD_VER = "v12", DEFAULT_WEEK = 4, MACK_VER = "321";
+const BOARD_VER = "v13", DEFAULT_WEEK = 4, MACK_VER = "321";
 const $ = id => document.getElementById(id);
 let posts = [], replyTo = "", pendingId = "";
 function newId(){ return "p" + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
@@ -158,7 +158,7 @@ async function post(){
   if (!key) { key = (prompt("Board key (ask Scott or Mack once; it is remembered on this device):") || "").trim(); if (!key) return; try { localStorage.setItem("board-key", key); } catch(e){} }
   $("post").disabled = true; setDb("", "Posting…");
   try {
-    const u = STORE + "?board=1&key=" + encodeURIComponent(key) + "&id=" + encodeURIComponent(pendingId) + "&person=" + encodeURIComponent(who) + "&week=" + week + "&text=" + encodeURIComponent(text) + "&reply_to=" + encodeURIComponent(replyTo);
+    const u = STORE + "?board=1&key=" + encodeURIComponent(key) + "&id=" + encodeURIComponent(pendingId) + "&person=" + encodeURIComponent(who) + "&week=" + week + "&text=" + encodeURIComponent(text) + "&reply_to=" + encodeURIComponent(replyTo) + "&t=" + Date.now();
     const r = await fetch(u, {cache:"no-store"}); const j = await r.json();
     if (!j.ok) {
       if (j.error === "bad key") { try { localStorage.removeItem("board-key"); } catch(e){} throw new Error("that board key was not accepted, try again"); }
